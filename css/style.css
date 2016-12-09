@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/bg_photo.jpg');
+    background-size: cover;
+}
+
+.calendar-container {
+    width: 60%;
+    min-width: 550px;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+}
+
+.ui-button {
+    font-family: 'LatoWeb', sans-serif !important;
+    font-style: normal;
+}
+
+.calendar-container h2,
+th span {
+    font-family: 'LatoWeb', sans-serif !important;
+    font-style: normal;
+    font-weight: lighter;
+    color: #00a8fc;
+}
+
+.ui-widget-content.fc-today,
+.ui-state-highlight span {
+    background-color: #f2f9fc !important;
+}
+
+.header {
+    height: 80px;
+    border-bottom: 1px solid #00a8fc;
+    background-color: white;
+}
+
+.button-holder {
+    padding: 20px;
+}
+
+.button-holder.right {
+    float: right
+}
+
+.footer {
+    height: 80px;
+    background-color: #4d4e4f;
+    margin: 0 auto;
+}
+
+.header img {
+    margin: 10px 10px;
+}

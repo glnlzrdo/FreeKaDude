@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>free ka dude?</title>
+    <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+    <script src='fullcalendar/lib/jquery.min.js'></script>
+    <script src='fullcalendar/lib/moment.min.js'></script>
+    <script src='fullcalendar/fullcalendar.js'></script>
+    <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css" />
+    <script>
+        $(document).ready(function() {
+            var todayDate = moment().startOf('day');
+            var YM = todayDate.format('YYYY-MM');
+            var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+            var TODAY = todayDate.format('YYYY-MM-DD');
+            var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+            // page is now ready, initialize the calendar...
+
+            $('#calendar').fullCalendar({
+                // put your options and callbacks here
+                theme: Boolean,
+                default: true,
+                header: {
+                    left: 'month,agendaWeek,agendaDay',
+                    center: 'title'
+                },
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                navLinks: true,
+                events: [{
+                    title: 'Meeting',
+                    start: TODAY + 'T10:30:00',
+                    end: TODAY + 'T12:30:00'
+                }, {
+                    title: 'Meeting with Eman & Charles',
+                    start: YM + '-12',
+                    end: YM + '-14'
+                }, {
+                    title: 'Project Deadline',
+                    start: YM + '-14',
+                    end: YM + '-14'
+                }]
+            })
+
+        });
+    </script>
+    <link href="lato/latofonts.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+    <div class="header">
+        <div class="button-holder right">
+            <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
+        </div>
+        <img src="images/FkD Logo.png" height="50">
+    </div>
+    <div class="calendar-container">
+        <div id='calendar'></div>
+    </div>
+    <div class="footer"></div>
+</body>
+
+</html>
