@@ -4,62 +4,79 @@
 <head>
     <title>free ka dude?</title>
     <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
-    <script src='fullcalendar/lib/jquery.min.js'></script>
+    <link rel='stylesheet' href='css/bootstrap-combined.min.css' />
+    <script src='css/bootsrap.min.js'></script>
+    <script src='fullcalendar/lib/jquery.min.js'></script>    
     <script src='fullcalendar/lib/moment.min.js'></script>
     <script src='fullcalendar/fullcalendar.js'></script>
-    <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css" />
-    <script>
-        $(document).ready(function() {
-            var todayDate = moment().startOf('day');
-            var YM = todayDate.format('YYYY-MM');
-            var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-            var TODAY = todayDate.format('YYYY-MM-DD');
-            var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-            // page is now ready, initialize the calendar...
-
-            $('#calendar').fullCalendar({
-                // put your options and callbacks here
-                theme: Boolean,
-                default: true,
-                header: {
-                    left: 'month,agendaWeek,agendaDay',
-                    center: 'title'
-                },
-                editable: true,
-                eventLimit: true, // allow "more" link when too many events
-                navLinks: true,
-                events: [{
-                    title: 'Meeting',
-                    start: TODAY + 'T10:30:00',
-                    end: TODAY + 'T12:30:00'
-                }, {
-                    title: 'Meeting with Eman & Charles',
-                    start: YM + '-12',
-                    end: YM + '-14'
-                }, {
-                    title: 'Project Deadline',
-                    start: YM + '-14',
-                    end: YM + '-14'
-                }]
-            })
-
-        });
-    </script>
+    <script src='js/gcal.js'></script>
+    <link rel='stylesheet' href='jquery-ui/jquery-ui.min.css' />
+    <script src='js/calendar.js'></script>
     <link href="lato/latofonts.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
+    
     <div class="header">
         <div class="button-holder right">
+            <span>Welcome back, Glenn!</span>
             <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
         </div>
-        <img src="images/FkD Logo.png" height="50">
+        <img src="images/FkD Logo.png">
     </div>
-    <div class="calendar-container">
-        <div id='calendar'></div>
+
+    <div class="main-container">
+        <div class="calendar-container">
+            <div id='calendar'></div>
+        </div>
+
+        <div class="dude-board-header">
+            <h3>Free Dude Board</h3>
+        </div>
+        <div class="dude-board-content">
+            <div class="libre-matches">
+                <label class="dude-matches">Charles and You are both free on:</label>
+                <label class="date-time-matches">Monday, 12:00 PM - 1:00 PM</label>
+            </div>
+             <div class="libre-matches">
+                <label class="dude-matches">Charles, Eman and You are both free on:</label>
+                <label class="date-time-matches">Thursday, 12:00 PM - 1:00 PM</label>
+            </div>
+        </div>
     </div>
     <div class="footer"></div>
+
+<div id="createEventModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel1">Create Activity</h3>
+    </div>
+    <div class="modal-body">
+    <form id="createActivityForm" class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="inputActivity">Activity:</label>
+            <div class="controls">
+                <input type="text" name="ActivityName" id="ActivityName" tyle="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;Value 1&quot;,&quot;Value 2&quot;,&quot;Value 3&quot;]">
+                  <input type="hidden" id="apptStartTime"/>
+                  <input type="hidden" id="apptEndTime"/>
+                  <input type="hidden" id="apptAllDay" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="when">When:</label>
+            <div class="controls controls-row" id="when" style="margin-top:5px;">
+            </div>
+        </div>
+    </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="submitButton">Save</button>
+    </div>
+</div>
+  
+
 </body>
 
 </html>

@@ -5,38 +5,96 @@ body {
     background-size: cover;
 }
 
-.calendar-container {
-    width: 60%;
-    min-width: 550px;
+.main-container {
+    width: 100%;
+    min-width: 1200px;
+    min-height: 650px;
+}
+.calendar-container,
+.dude-board-header,
+.dude-board-content {
     margin: 20px;
     padding: 20px;
     background-color: white;
+    border: 1px solid #00a8fc;
 }
 
-.ui-button {
+.calendar-container {
+    width: 45%;
+    min-width: 550px;
+    float: left;
+}
+
+.dude-board-header {
+    margin-bottom: 0;
+    background-color: #00a8fc;
+    text-align: center;
+}
+
+.dude-board-content{
+    padding-top: 0;
+    margin-top: 0;
+    border-top: 0;
+    min-height: 450px;
+}
+.dude-board-header,
+.dude-board-content {
+    width: 40%;
+    min-width: 300px;
+    float: right;
+}
+
+.dude-board-header h3 {
+    font-family: 'LatoWeb';
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+.ui-button,
+.libre-matches {
     font-family: 'LatoWeb', sans-serif !important;
     font-style: normal;
 }
+.libre-matches {
+    border-bottom: 1px solid #00a8fc;
+    padding: 15px;
+}
+
+.button-holder span,
+.dude-matches {
+    color: #00a8fc;
+    font-size: 18px;
+    margin-right: 20px;
+}
 
 .calendar-container h2,
-th span {
+th span, .ui-widget,
+a.fc-day-number {
     font-family: 'LatoWeb', sans-serif !important;
     font-style: normal;
     font-weight: lighter;
     color: #00a8fc;
 }
-
+/*
 .ui-widget-content.fc-today,
 .ui-state-highlight span {
     background-color: #f2f9fc !important;
 }
-
+*/
+.fc-content {
+     background-color: #00a8fc;
+}
 .header {
     height: 80px;
+    border-top: 1px solid #00a8fc;
     border-bottom: 1px solid #00a8fc;
     background-color: white;
+    margin-bottom: 30px;
 }
-
+.header img {
+    height: 50px;
+}
 .button-holder {
     padding: 20px;
 }
@@ -49,6 +107,7 @@ th span {
     height: 80px;
     background-color: #4d4e4f;
     margin: 0 auto;
+    clear: both;
 }
 
 .header img {
