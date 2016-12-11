@@ -68,17 +68,41 @@ body {
     margin-right: 20px;
 }
 
-.calendar-container h2 {
+.calendar-container h2,
+.modal h3 {
     font-size: 28px;
 }
 
 .calendar-container h2,
 th span, .ui-widget,
-a.fc-day-number {
+a.fc-day-number,
+.modal,
+.modal h3 {
     font-family: 'LatoWeb', sans-serif !important;
     font-style: normal;
     font-weight: lighter;
     color: #00a8fc;
+}
+
+.modal {
+    border: 2px solid #00a8fc;
+}
+
+.edit-label {
+    width: 120px !important;
+}
+
+div.controls.edit-control,
+#editWhen.controls {
+    margin-left: 160px;
+}
+
+#editEventModal {
+    width: 600px;
+}
+
+#inputActivity {
+    width: 330px;
 }
 /*
 .ui-widget-content.fc-today,
@@ -116,4 +140,37 @@ a.fc-day-number {
 
 .header img {
     margin: 10px 10px;
+}
+
+#register-username {
+    margin-left: 10px;
+    float: left;
+}
+
+#register-password {
+    margin-left: 40px;
+    float: left;
+}
+
+#register-email {
+    margin-left: 10px;
+    float: left;
+    clear: right;
+}
+
+#register-firstname {
+    margin-left: 10px;
+    clear: left;
+    float: left;
+}
+
+#register-lastname {
+    margin-left: 40px;
+    float: left;
+}
+
+
+
+#modal-title-head {
+    color: #00a8fc;
 }

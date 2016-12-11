@@ -49,7 +49,7 @@
     </div>
     <div class="footer"></div>
 
-<div id="createEventModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<div id="createEventModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         <h3 id="myModalLabel1">Create Activity</h3>
@@ -57,9 +57,11 @@
     <div class="modal-body">
     <form id="createActivityForm" class="form-horizontal">
         <div class="control-group">
-            <label class="control-label" for="inputActivity">Activity:</label>
+            <label class="control-label" for="activityName">Activity:</label>
             <div class="controls">
-                <input type="text" name="activityName" id="activityName" tyle="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;Value 1&quot;,&quot;Value 2&quot;,&quot;Value 3&quot;]">
+                
+                <input type="text" name="activityName" id="activityName" style="margin: 0 auto;" />                
+                  <!--<input type="text" id="activityName" />-->
                   <input type="hidden" id="apptStartTime"/>
                   <input type="hidden" id="apptEndTime"/>
                   <input type="hidden" id="apptAllDay" />
@@ -77,6 +79,40 @@
     <div class="modal-footer">
         <button id="prompt-cancel" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
         <button id="prompt-save" type="submit" class="btn btn-primary">Save</button>
+    </div>
+</div>
+
+<div id="editEventModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel1">Edit Activity</h3>
+    </div>
+    <div class="modal-body">
+    <form id="editActivityForm" class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label edit-label" for="inputActivity">Activity:</label>
+            <div class="controls edit-control">
+                
+                <input type="text" name="activityName" id="inputActivity" style="margin: 0 auto;" />                
+                  <!--<input type="text" id="activityName" />-->
+                  <input type="hidden" id="editStartTime"/>
+                  <input type="hidden" id="editEndTime"/>
+                  <input type="hidden" id="editAllDay" />
+            </div>
+        </div>
+        
+            <div class="control-group edit-control">
+                <label class="control-label edit-label" for="when">When:</label>
+                <div class="controls controls-row" id="editWhen" style="margin-top:5px;">
+                </div>
+            </div>
+        
+    </form>
+    </div>
+    <div class="modal-footer">
+        <button id="prompt-cancel-edit" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button id="prompt-delete" class="btn btn-danger">Delete</button>
+        <button id="prompt-update" class="btn btn-primary">Update</button>
     </div>
 </div>
   
