@@ -68,6 +68,10 @@ body {
     margin-right: 20px;
 }
 
+.calendar-container h2 {
+    font-size: 28px;
+}
+
 .calendar-container h2,
 th span, .ui-widget,
 a.fc-day-number {
