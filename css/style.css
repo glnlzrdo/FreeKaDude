@@ -4,7 +4,7 @@ body {
     background-image: url('../images/bg_photo.jpg');
     background-size: cover;
     min-height: 100vh;
-    font-family: 'LatoWeb';
+    /*comment*/
 }
 
 .main-container {
