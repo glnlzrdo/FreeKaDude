@@ -47,14 +47,6 @@ public class Form {
 	@RequestMapping("/login")
 	public ModelAndView showForm(){
 		ModelAndView model = new ModelAndView("login");
-		
-		return model;
-	}
-	
-	@RequestMapping("/main")
-	public ModelAndView main(){
-		ModelAndView model = new ModelAndView("main");
-		
 		return model;
 	}
 	
@@ -80,24 +72,19 @@ public class Form {
 
 	}
 	
-	
-	
-	@RequestMapping(params = "submit", method = RequestMethod.POST)
-	public ModelAndView register(User user){
-		ModelAndView model = new ModelAndView("home");
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String authenticate(User user, SessionStatus status){
+		User userResult = userDao.getUser(user.getUsername(), user.getPassword());
 		
-		int result = userDao.createUser(user);
-		model.addObject("result", result );
-		return model;
-	}
-	
-	@RequestMapping(params = "login", method = RequestMethod.POST)
-	public ModelAndView authenticate(User user){
-		ModelAndView model = new ModelAndView("home");
-	
-		User userResult = userDao.getUser(user.getUsername());
+		if(userResult != null) {
+			//System.out.println("Login OK");
+			return "main";
+		} else {
+			//System.out.println("Login Fail");
+			return "redirect:login";
+		}
 		
-		ObjectMapper mapper = new ObjectMapper();
+		/*ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = null;
 		try {
 			jsonInString = mapper.writeValueAsString(userResult);
@@ -105,11 +92,7 @@ public class Form {
 			e.printStackTrace();
 		}
 		
-		System.out.println(jsonInString.toString());
-		
-		
-		model.addObject("user", userResult );
-		return model;
+		System.out.println(jsonInString.toString());*/
 	}
 	
 	@RequestMapping(params = "addEvent", method = RequestMethod.POST)
@@ -193,8 +176,7 @@ public class Form {
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
 	public String registerUser(User user) {
 		userDao.createUser(user);
-		
-		System.out.println("Registered");
+		//System.out.println("Registered");
 		return "redirect:login";
 	}
 	

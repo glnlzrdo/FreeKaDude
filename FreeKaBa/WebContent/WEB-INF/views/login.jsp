@@ -42,17 +42,17 @@
         <div id="login-label">
                 <h1>Login</h1>
         </div>
-        <form:form method="post" action="App/main">
+        <form method="post" action="/FreeKaBa/App/home">
 	        <div id="login-left-box">
 	            <div class="login-box">
 	                <p>Username</p>
-	                <input class="login-fields" type="text" name="usernameLogin"/>
+	                <input class="login-fields" type="text" name="username" placeholder="Username"/>
 	                <p>Password</p>
-	                <input class="login-fields" type="password" name="passwordLogin"/><br/><br/>
+	                <input class="login-fields" type="password" name="password" placeholder="Password"/><br/><br/>
 	                <button class="btn btn-info" type="submit">Login</button>
 	            </div>
 	        </div>
-	        </form:form>
+	    </form>
 	    <div id="login-right-box">
 	        <p>Not yet a member?<br> Click on the button below to register!</p><br/>
 	        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Register</button>
@@ -61,7 +61,7 @@
 
     <!--MODAL-->
     <!-- Modal -->
-    <form method="post" action="App/registeruser">
+    <form method="post" action="/FreeKaBa/App/registeruser">
 	    <div id="myModal" class="modal fade" role="dialog">
 	        <div class="modal-dialog">
 	        <!-- Modal content-->

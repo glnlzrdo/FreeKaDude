@@ -26,16 +26,17 @@ public class UserDAOImpl implements UserDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public User getUser(String username) { //TODO incorporate password
+	public User getUser(String username, String password) { //TODO incorporate password
 		List<User> users = new ArrayList<User>();
-		String hql = "FROM User WHERE username=?";
+		String hql = "FROM User WHERE username=? AND password=?";
 		users = (List<User>) sessionFactory.getCurrentSession()
 				.createQuery(hql)
 				.setParameter(0, username)
+				.setParameter(1, password)
 				.getResultList();
 
 		if (users.size() > 0) {
-	//		System.out.println(users.get(0));
+			//System.out.println(users.get(0));
 			return users.get(0);
 			
 		} else {
