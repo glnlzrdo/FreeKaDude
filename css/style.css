@@ -142,6 +142,56 @@ div.controls.edit-control,
     margin: 10px 10px;
 }
 
+.header img {
+    margin: 10px 10px;
+}
+
+#login-container {
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    min-height: 300px;
+    min-width: 550px;
+    border: 1px solid #00a8fc;
+    background-color: white;
+    z-index: 100;
+}
+
+#myModal {
+    display: none;
+}
+
+#login-label {
+    padding: 5px;
+    padding-left: 15px;
+    color: #00a8fc;
+    font-family: 'LatoWeb';
+    width: 100%;
+}
+
+#login-left-box {
+    float: left;
+}
+
+#login-right-box {
+    float: right;
+    font-family: 'LatoWeb';
+    text-align: right;
+    padding-right: 15px;
+}
+
+.login-box {
+    padding: 5px;
+    padding-left: 20px;
+    padding-bottom: 0px;
+    font-family: 'LatoWeb';
+    font-size: 15px;
+}
+
+.login-fields {
+    
+}
+
 #register-username {
     margin-left: 10px;
     float: left;
@@ -169,7 +219,10 @@ div.controls.edit-control,
     float: left;
 }
 
-
+#myModal {
+    border: 2px solid #00a8fc;
+    font-family: 'LatoWeb';
+}
 
 #modal-title-head {
     color: #00a8fc;
