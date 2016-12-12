@@ -4,28 +4,28 @@
 <head>
     <meta charset="utf-8"/>
     <title>free ka dude?</title>
-    <link rel='stylesheet' href='jquery-ui/jquery-ui.min.css' />
-    <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
-    <link rel='stylesheet' href='css/bootstrap-combined.min.css' />
-    <script src='fullcalendar/lib/jquery.min.js'></script>    
-    <script src='css/bootstrap.min.js'></script> 
-    <script src='fullcalendar/lib/moment.min.js'></script>
-    <script src='fullcalendar/fullcalendar.js'></script>
-    <script src='js/gcal.js'></script>
-    
-    <script src='js/calendar.js'></script>
-    <link href="lato/latofonts.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel='stylesheet' href='../../resources/jquery-ui/jquery-ui.min.css' />
+    <link rel='stylesheet' href='../../resources/fullcalendar/fullcalendar.css' />
+    <link rel='stylesheet' href='../../resources/css/bootstrap-combined.min.css' />
+    <script src='../../resources/fullcalendar/lib/jquery.min.js'></script>
+    <script src='../../resources/css/bootstrap.min.js'></script>
+    <script src='../../resources/fullcalendar/lib/moment.min.js'></script>
+    <script src='../../resources/fullcalendar/fullcalendar.js'></script>
+    <script src='../../resources/js/gcal.js'></script>
+
+    <script src='../../resources/js/calendar.js'></script>
+    <link href="../../resources/lato/latofonts.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../resources/css/style.css" />
 </head>
 
 <body>
-    
+
     <div class="header">
         <div class="button-holder right">
             <span>Welcome back, Glenn!</span>
             <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
         </div>
-        <img src="images/FkD Logo.png">
+        <img src="../../resources/images/FkD Logo.png">
     </div>
 
     <div class="main-container">
@@ -59,21 +59,21 @@
         <div class="control-group">
             <label class="control-label" for="activityName">Activity:</label>
             <div class="controls">
-                
-                <input type="text" name="activityName" id="activityName" style="margin: 0 auto;" />                
+
+                <input type="text" name="activityName" id="activityName" style="margin: 0 auto;" />
                   <!--<input type="text" id="activityName" />-->
                   <input type="hidden" id="apptStartTime"/>
                   <input type="hidden" id="apptEndTime"/>
                   <input type="hidden" id="apptAllDay" />
             </div>
         </div>
-        
+
             <div class="control-group">
                 <label class="control-label" for="when">When:</label>
                 <div class="controls controls-row" id="when" style="margin-top:5px;">
                 </div>
             </div>
-        
+
     </form>
     </div>
     <div class="modal-footer">
@@ -92,21 +92,21 @@
         <div class="control-group">
             <label class="control-label edit-label" for="inputActivity">Activity:</label>
             <div class="controls edit-control">
-                
-                <input type="text" name="activityName" id="inputActivity" style="margin: 0 auto;" />                
+
+                <input type="text" name="activityName" id="inputActivity" style="margin: 0 auto;" />
                   <!--<input type="text" id="activityName" />-->
                   <input type="hidden" id="editStartTime"/>
                   <input type="hidden" id="editEndTime"/>
                   <input type="hidden" id="editAllDay" />
             </div>
         </div>
-        
+
             <div class="control-group edit-control">
                 <label class="control-label edit-label" for="when">When:</label>
                 <div class="controls controls-row" id="editWhen" style="margin-top:5px;">
                 </div>
             </div>
-        
+
     </form>
     </div>
     <div class="modal-footer">
@@ -115,7 +115,7 @@
         <button id="prompt-update" class="btn btn-primary">Update</button>
     </div>
 </div>
-  
+
 
 </body>
 
