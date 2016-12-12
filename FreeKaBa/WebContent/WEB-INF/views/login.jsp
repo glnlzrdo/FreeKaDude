@@ -4,28 +4,29 @@
 <head>
     <meta charset="utf-8"/>
     <title>free ka dude?</title>
-    <link rel='stylesheet' href='../../resources/jquery-ui/jquery-ui.min.css' />
-    <link rel='stylesheet' href='../../resources/fullcalendar/fullcalendar.css' />
-    <link rel='stylesheet' href='../../resources/css/bootstrap-combined.min.css' />
-    <script src='../../resources/fullcalendar/lib/jquery.min.js'></script>
-    <script src='../../resources/css/bootstrap.min.js'></script>
-    <script src='../../resources/fullcalendar/lib/moment.min.js'></script>
-    <script src='../../resources/fullcalendar/fullcalendar.js'></script>
-    <script src='../../resources/js/gcal.js'></script>
+    <link rel='stylesheet' href='resources/jquery-ui/jquery-ui.min.css' />
+    <link rel='stylesheet' href='resources/fullcalendar/fullcalendar.css' />
+    <link rel='stylesheet' href='resources/css/bootstrap-combined.min.css' />
+    <script src='resources/fullcalendar/lib/jquery.min.js'></script>
+    <script src='resources/css/bootstrap.min.js'></script>
+    <script src='resources/fullcalendar/lib/moment.min.js'></script>
+    <script src='resources/fullcalendar/fullcalendar.js'></script>
+    <script src='resources/js/gcal.js'></script>
 
-    <script src='../../resources/js/calendar.js'></script>
-    <link href="../../resources/lato/latofonts.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../resources/css/style.css" />
+    <script src='resources/js/calendar.js'></script>
+    <link href="resources/lato/latofonts.css" rel="stylesheet">
+    <link rel="stylesheet" href="resources/css/style.css" />
 </head>
 
 <body>
   <div class="header">
-      <img src="../../resources/images/FkD Logo.png">
+      <img src="resources/images/FkD Logo.png">
   </div>
     <div id="login-container">
         <div id="login-label">
                 <h1>Login</h1>
         </div>
+        <form action="App/main">
         <div id="login-left-box">
             <div class="login-box">
                 <p>Username</p>
@@ -35,6 +36,7 @@
                 <button class="btn btn-info" type="submit">Login</button>
             </div>
         </div>
+        </form>
         <div id="login-right-box">
             <p>Not yet a member?<br> Click on the button below to register!</p><br/>
             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Register</button>

@@ -33,9 +33,17 @@ public class Form {
 	@Autowired
 	private EventDAO eventDao;
 	
-	@RequestMapping("/forma")
+	
+	@RequestMapping("/login")
 	public ModelAndView showForm(){
-		ModelAndView model = new ModelAndView("form");
+		ModelAndView model = new ModelAndView("login");
+		
+		return model;
+	}
+	
+	@RequestMapping("/main")
+	public ModelAndView main(){
+		ModelAndView model = new ModelAndView("main");
 		
 		return model;
 	}

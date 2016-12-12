@@ -1,21 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8"/>
     <title>free ka dude?</title>
-    <link rel='stylesheet' href='../../resources/jquery-ui/jquery-ui.min.css' />
-    <link rel='stylesheet' href='../../resources/fullcalendar/fullcalendar.css' />
-    <link rel='stylesheet' href='../../resources/css/bootstrap-combined.min.css' />
-    <script src='../../resources/fullcalendar/lib/jquery.min.js'></script>
-    <script src='../../resources/css/bootstrap.min.js'></script>
-    <script src='../../resources/fullcalendar/lib/moment.min.js'></script>
-    <script src='../../resources/fullcalendar/fullcalendar.js'></script>
-    <script src='../../resources/js/gcal.js'></script>
+    
+    <spring:url value="/resources/jquery-ui/jquery-ui.min.css" var="jQui" />
+    <spring:url value="/resources/fullcalendar/fullcalendar.css" var="fCal" />
+    <spring:url value="/resources/css/bootstrap-combined.min.css" var="bsCom" />
+    <spring:url value="/resources/fullcalendar/lib/jquery.min.js" var="jQmin" />
+    <spring:url value="/resources/css/bootstrap.min.js" var="bsMin" />
+    <spring:url value="/resources/fullcalendar/lib/moment.min.js" var="moment" />
+    <spring:url value="/resources/fullcalendar/fullcalendar.js" var="fulCal" />
+    <spring:url value="/resources/js/gcal.js" var="gCal" />
+    <spring:url value="/resources/js/calendar.js" var="calFunc" />
+    <spring:url value="/resources/lato/latofonts.css" var="latoFont" />
+    <spring:url value="/resources/css/style.css" var="customStyle" />
+    
+    <link rel='stylesheet' href='${jQui}' />
+    <link rel='stylesheet' href='${fCal}' />
+    <link rel='stylesheet' href='${bsCom}' />
+    <script src='${jQmin}'></script>
+    <script src='${bsMin}'></script>
+    <script src='${moment}'></script>
+    <script src='${fulCal}'></script>
+    <script src='${gCal}'></script>
 
-    <script src='../../resources/js/calendar.js'></script>
-    <link href="../../resources/lato/latofonts.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../resources/css/style.css" />
+    <script src='${calFunc}'></script>
+    <link href="${latoFont}" rel="stylesheet">
+    <link rel="stylesheet" href="${customStyle}" />
 </head>
 
 <body>
@@ -25,7 +46,7 @@
             <span>Welcome back, Glenn!</span>
             <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
         </div>
-        <img src="../../resources/images/FkD Logo.png">
+        <img src="resources/images/FkD Logo.png">
     </div>
 
     <div class="main-container">
