@@ -3,6 +3,7 @@ body {
     padding: 0;
     background-image: url('../images/bg_photo.jpg');
     background-size: cover;
+    min-height: 100vh;
 }
 
 .main-container {
