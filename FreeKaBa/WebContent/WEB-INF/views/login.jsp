@@ -19,6 +19,7 @@
     <spring:url value="/resources/js/calendar.js" var="calFunc" />
     <spring:url value="/resources/lato/latofonts.css" var="latoFont" />
     <spring:url value="/resources/css/style.css" var="customStyle" />
+    <spring:url value="/resources/images/FkD Logo.png" var="fkdlogo" />
     
     <link rel='stylesheet' href='${jQui}' />
     <link rel='stylesheet' href='${fCal}' />
@@ -36,7 +37,7 @@
 
 <body>
   <div class="header">
-      <img src="resources/images/FkD Logo.png">
+      <img src="${fkdlogo}">
   </div>
     <div id="login-container">
         <div id="login-label">
@@ -46,9 +47,9 @@
 	        <div id="login-left-box">
 	            <div class="login-box">
 	                <p>Username</p>
-	                <input class="login-fields" type="text" name="username" placeholder="Username"/>
+	                <input class="login-fields" type="text" name="username" placeholder="Username" required="required"/>
 	                <p>Password</p>
-	                <input class="login-fields" type="password" name="password" placeholder="Password"/><br/><br/>
+	                <input class="login-fields" type="password" name="password" placeholder="Password" required="required"/><br/><br/>
 	                <button class="btn btn-info" type="submit">Login</button>
 	            </div>
 	        </div>

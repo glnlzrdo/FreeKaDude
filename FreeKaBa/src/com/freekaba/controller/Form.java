@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,6 +178,12 @@ public class Form {
 	public String registerUser(User user) {
 		userDao.createUser(user);
 		//System.out.println("Registered");
+		return "redirect:login";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String logout(HttpServletRequest request) {
+		request.getSession().invalidate();
 		return "redirect:login";
 	}
 	

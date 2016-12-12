@@ -34,7 +34,9 @@
     <div class="header">
         <div class="button-holder right">
             <span>Welcome back, Glenn!</span>
-            <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
+            <form method="post" action="/FreeKaBa/App/logout">
+            	<input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
+            </form>
         </div>
         <img src="${resourceURL}images/FkD Logo.png">
     </div>
