@@ -58,7 +58,7 @@ public class Form {
 		return model;
 	}
 	
-	//@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "/process", method = RequestMethod.POST)
 	public String getSearchResultViaAjax(Activity activity) throws JsonProcessingException {
 
