@@ -6,7 +6,7 @@ $(document).ready(function () {
     var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
     var TODAY = todayDate.format('YYYY-MM-DD');
     var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
-    var dstart, dend, currentEvent;
+    var dstart, dend, currentEvent, newEvent;
     // page is now ready, initialize the calendar...
 
     var calendar = $('#calendar').fullCalendar({
@@ -56,7 +56,7 @@ $(document).ready(function () {
             $('#editEventModal').modal('show');
             dstart = calEvent.start;
             dend = calEvent._end;
-            currentEvent = calEvent._id;
+            currentEvent = calEvent;
 
         },
 
@@ -74,6 +74,7 @@ $(document).ready(function () {
             $('#createEventModal').modal('show');
             dstart = start;
             dend = end;
+            
         }
 
 
@@ -91,7 +92,24 @@ $(document).ready(function () {
                 start: dstart,
                 end: dend
             };
-            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            
+            
+            //AJAX feature to save to database            
+            $.ajax({
+              url: 'process',
+              data: 'title='+title+'&startDate='+dstart+'&endDate='+dend,
+              type: 'POST',
+              dataType: 'json',
+              success: function(response){
+            	  $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true	
+            	  alert("success");
+              },
+              error: function(e){
+                console.log(e.responseText);
+                alert("error");
+              }
+            });
+            
         }
         $('#calendar').fullCalendar('unselect');
     });
@@ -102,13 +120,17 @@ $(document).ready(function () {
         var title = $('#inputActivity').val();
         var eventData;
         if (title) {
-            eventData = {
-                title: title,
-                start: dstart,
-                end: dend
-            };
-            $('#calendar').fullCalendar('removeEvents', currentEvent);
-            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+//            eventData = {
+//                title: title,
+//                start: dstart,
+//                end: dend
+//            };
+        	currentEvent.title = title;
+        	currentEvent.start = dstart;
+        	currentEvent.end = dend;
+            $('#calendar').fullCalendar('updateEvent', currentEvent);
+            //$('#calendar').fullCalendar('removeEvents', currentEvent._id);
+            //$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
         }
         $('#calendar').fullCalendar('unselect');
     });
@@ -117,7 +139,7 @@ $(document).ready(function () {
         e.preventDefault();
          var r = confirm("Are you sure? This cannot be undone.");
              if (r === true) {
-                 $('#calendar').fullCalendar('removeEvents', currentEvent);
+                 $('#calendar').fullCalendar('removeEvents', currentEvent._id);
                  $("#editEventModal").modal('hide');
              }
         $('#calendar').fullCalendar('unselect');
