@@ -1,5 +1,6 @@
 package com.freekaba.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,9 +10,11 @@ import java.util.Map;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,7 +22,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freekaba.dao.EventDAO;
 import com.freekaba.dao.UserDAO;
+import com.freekaba.model.Activity;
 import com.freekaba.model.Event;
+import com.freekaba.model.EventHour;
 import com.freekaba.model.User;
 
 import javassist.bytecode.Descriptor.Iterator;
@@ -32,6 +37,7 @@ public class Form {
 	private UserDAO userDao;
 	@Autowired
 	private EventDAO eventDao;
+	
 	
 	
 	@RequestMapping("/login")
@@ -47,6 +53,30 @@ public class Form {
 		
 		return model;
 	}
+	
+	//@ResponseBody
+	@RequestMapping(value = "/process", method = RequestMethod.POST)
+	public String getSearchResultViaAjax(Activity activity) throws JsonProcessingException {
+
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+//		Staff obj = new Staff();
+
+		//Object to JSON in String
+		String jsonInString = mapper.writeValueAsString(activity);
+		
+		
+		System.out.println(activity.getTitle());
+		System.out.println(activity.getStartDate());
+		System.out.println(activity.getEndDate());
+		
+		System.out.println(jsonInString);
+		return jsonInString;
+
+	}
+	
+	
 	
 	@RequestMapping(params = "submit", method = RequestMethod.POST)
 	public ModelAndView register(User user){
