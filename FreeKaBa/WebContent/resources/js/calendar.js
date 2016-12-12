@@ -97,16 +97,14 @@ $(document).ready(function () {
             //AJAX feature to save to database            
             $.ajax({
               url: 'process',
-              data: 'title='+title+'&startDate='+dstart+'&endDate='+dend,
+              data: 'title='+title+'&startDate='+moment(dstart).format('dddd MMM DD, h:mm a')+'&endDate='+moment(dend).format('dddd MMM DD, h:mm a'),
               type: 'POST',
               dataType: 'json',
               success: function(response){
             	  $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true	
-            	  alert("success");
               },
               error: function(e){
                 console.log(e.responseText);
-                alert("error");
               }
             });
             
