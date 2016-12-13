@@ -1,27 +1,37 @@
 package com.freekaba.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freekaba.dao.EventDAO;
 import com.freekaba.dao.UserDAO;
+import com.freekaba.model.Activity;
 import com.freekaba.model.Event;
+import com.freekaba.model.EventHour;
 import com.freekaba.model.User;
-
 import javassist.bytecode.Descriptor.Iterator;
 
 @SessionAttributes("user")
@@ -33,41 +43,42 @@ public class Form {
 	@Autowired
 	private EventDAO eventDao;
 	
-	@RequestMapping("/forma")
+	
+	
+	@RequestMapping("/login")
 	public ModelAndView showForm(){
-		ModelAndView model = new ModelAndView("form");
-		
+		ModelAndView model = new ModelAndView("login");
 		return model;
 	}
 	
-	@RequestMapping(params = "submit", method = RequestMethod.POST)
-	public ModelAndView register(User user){
-		ModelAndView model = new ModelAndView("home");
+	@ResponseBody
+	@RequestMapping(value = "/process", method = RequestMethod.POST)
+	public String getSearchResultViaAjax(Activity activity) throws JsonProcessingException {
+
 		
-		int result = userDao.createUser(user);
-		model.addObject("result", result );
-		return model;
-	}
-	
-	@RequestMapping(params = "login", method = RequestMethod.POST)
-	public ModelAndView authenticate(User user){
-		ModelAndView model = new ModelAndView("home");
-	
-		User userResult = userDao.getUser(user.getUsername());
 		
 		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = null;
-		try {
-			jsonInString = mapper.writeValueAsString(userResult);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+		String jsonInString = mapper.writeValueAsString(activity);
+		
+		
+		System.out.println(activity.getTitle());
+		System.out.println(activity.getStartDate());
+		System.out.println(activity.getEndDate());
+		
+		System.out.println(jsonInString);
+		return jsonInString;
+
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String authenticate(User user, SessionStatus status){
+		User userResult = userDao.getUser(user.getUsername(), user.getPassword());
+		
+		if(userResult != null) {
+			return "main";
+		} else {
+			return "redirect:login";
 		}
-		
-		System.out.println(jsonInString.toString());
-		
-		
-		model.addObject("user", userResult );
-		return model;
 	}
 	
 	@RequestMapping(params = "addEvent", method = RequestMethod.POST)
@@ -142,11 +153,20 @@ public class Form {
 			}
 			prevEvent = currEvent;
 			prevEventHour = currHour;
-		
 		}
-//		eventDao.createEvent(new Event(user, event.get(i), new Date()));
 		return new ModelAndView("home");
 	}
 	
+	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
+	public String registerUser(User user) {
+		userDao.createUser(user);
+		return "redirect:login";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	public String logout(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:login";
+	}
 	
 }

@@ -1,21 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8"/>
     <title>free ka dude?</title>
-    <link rel='stylesheet' href='../../resources/jquery-ui/jquery-ui.min.css' />
-    <link rel='stylesheet' href='../../resources/fullcalendar/fullcalendar.css' />
-    <link rel='stylesheet' href='../../resources/css/bootstrap-combined.min.css' />
-    <script src='../../resources/fullcalendar/lib/jquery.min.js'></script>
-    <script src='../../resources/css/bootstrap.min.js'></script>
-    <script src='../../resources/fullcalendar/lib/moment.min.js'></script>
-    <script src='../../resources/fullcalendar/fullcalendar.js'></script>
-    <script src='../../resources/js/gcal.js'></script>
+        
+    <spring:url value ="/resources/" var="resourceURL" />
+    
+    <link rel='stylesheet' href='${resourceURL}jquery-ui/jquery-ui.min.css' />
+    <link rel='stylesheet' href='${resourceURL}fullcalendar/fullcalendar.css' />
+    <link rel='stylesheet' href='${resourceURL}css/bootstrap-combined.min.css' />
+    <script src='${resourceURL}fullcalendar/lib/jquery.min.js'></script>
+    <script src='${resourceURL}css/bootstrap.min.js'></script>
+    <script src='${resourceURL}fullcalendar/lib/moment.min.js'></script>
+    <script src='${resourceURL}fullcalendar/fullcalendar.js'></script>
+    <script src='${resourceURL}js/gcal.js'></script>
 
-    <script src='../../resources/js/calendar.js'></script>
-    <link href="../../resources/lato/latofonts.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../resources/css/style.css" />
+    <script src='${resourceURL}js/calendar.js'></script>
+    <link href="${resourceURL}lato/latofonts.css" rel="stylesheet">
+    <link rel="stylesheet" href="${resourceURL}css/style.css" />
 </head>
 
 <body>
@@ -23,9 +34,11 @@
     <div class="header">
         <div class="button-holder right">
             <span>Welcome back, Glenn!</span>
-            <input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
+            <form method="post" action="/FreeKaBa/App/logout">
+            	<input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
+            </form>
         </div>
-        <img src="../../resources/images/FkD Logo.png">
+        <img src="${resourceURL}images/FkD Logo.png">
     </div>
 
     <div class="main-container">
