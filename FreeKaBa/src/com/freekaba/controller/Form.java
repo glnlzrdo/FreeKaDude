@@ -58,9 +58,6 @@ public class Form {
 		
 		
 		ObjectMapper mapper = new ObjectMapper();
-//		Staff obj = new Staff();
-
-		//Object to JSON in String
 		String jsonInString = mapper.writeValueAsString(activity);
 		
 		
@@ -78,22 +75,10 @@ public class Form {
 		User userResult = userDao.getUser(user.getUsername(), user.getPassword());
 		
 		if(userResult != null) {
-			//System.out.println("Login OK");
 			return "main";
 		} else {
-			//System.out.println("Login Fail");
 			return "redirect:login";
 		}
-		
-		/*ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = null;
-		try {
-			jsonInString = mapper.writeValueAsString(userResult);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println(jsonInString.toString());*/
 	}
 	
 	@RequestMapping(params = "addEvent", method = RequestMethod.POST)
@@ -168,16 +153,13 @@ public class Form {
 			}
 			prevEvent = currEvent;
 			prevEventHour = currHour;
-		
 		}
-//		eventDao.createEvent(new Event(user, event.get(i), new Date()));
 		return new ModelAndView("home");
 	}
 	
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
 	public String registerUser(User user) {
 		userDao.createUser(user);
-		//System.out.println("Registered");
 		return "redirect:login";
 	}
 	

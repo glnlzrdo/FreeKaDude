@@ -36,9 +36,7 @@ public class UserDAOImpl implements UserDAO{
 				.getResultList();
 
 		if (users.size() > 0) {
-			//System.out.println(users.get(0));
 			return users.get(0);
-			
 		} else {
 			return null;
 		}
