@@ -96,17 +96,17 @@ $(document).ready(function () {
             
             //AJAX feature to save to database            
             $.ajax({
-              url: 'process',
-              data: 'title='+title+'&startDate='+moment(dstart).format('dddd MMM DD, h:mm a')+'&endDate='+moment(dend).format('dddd MMM DD, h:mm a'),
-              type: 'POST',
-              dataType: 'json',
-              success: function(response){
-            	  $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true	
-              },
-              error: function(e){
-                console.log(e.responseText);
-              }
-            });
+                url: 'process',
+                data: 'description='+title+'&startTime='+moment(dstart).format('YYYY-MM-DD HH:mm:ss')+'&endTime='+moment(dend).format('YYYY-MM-DD HH:mm:ss'),
+                type: 'POST',
+                dataType: 'json',
+                success: function(response){
+              	  $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true	
+                },
+                error: function(e){
+                  console.log(e.responseText);
+                }
+              });
             
         }
         $('#calendar').fullCalendar('unselect');
