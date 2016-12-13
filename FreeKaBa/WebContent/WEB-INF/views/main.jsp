@@ -33,7 +33,7 @@
 
     <div class="header">
         <div class="button-holder right">
-            <span>Welcome back, Glenn!</span>
+            <span>Welcome back, <c:out value="${user.firstname}"/>!</span>
             <form method="post" action="/FreeKaBa/App/logout">
             	<input class="ui-button ui-widget ui-corner-all" type="submit" value="Logout">
             </form>
@@ -48,6 +48,13 @@
 
         <div class="dude-board-header">
             <h3>Free Dude Board</h3>
+            <div class="dude-board-search">
+	            <h4>Search Common Free Time</h4>
+	            <form action="Search" method="post">
+	            	From: <input name="searchFrom" type="date"> Until: <input name="searchTo" type="date">
+	            	<input type="submit" name="search" value="Search">
+	            </form>
+	        </div>
         </div>
         <div class="dude-board-content">
             <div class="libre-matches">

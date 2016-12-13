@@ -1,5 +1,6 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -46,11 +47,19 @@
         <form method="post" action="/FreeKaBa/App/home">
 	        <div id="login-left-box">
 	            <div class="login-box">
+		            <c:if test="${not empty error}">
+						<div class="error">${error}</div>
+					</c:if>
+					<c:if test="${not empty msg}">
+						<div class="msg">${msg}</div>
+					</c:if>
 	                <p>Username</p>
 	                <input class="login-fields" type="text" name="username" placeholder="Username" required="required"/>
 	                <p>Password</p>
-	                <input class="login-fields" type="password" name="password" placeholder="Password" required="required"/><br/><br/>
-	                <button class="btn btn-info" type="submit">Login</button>
+	                <input class="login-fields" type="password" name="password" placeholder="Password" required="required"/><br/>
+	                <div id="login-button">
+	                	<button class="btn btn-info" type="submit">Login</button>
+	                </div>
 	            </div>
 	        </div>
 	    </form>
@@ -60,7 +69,6 @@
     	</div>
     </div>
 
-    <!--MODAL-->
     <!-- Modal -->
     <form method="post" action="/FreeKaBa/App/registeruser">
 	    <div id="myModal" class="modal fade" role="dialog">

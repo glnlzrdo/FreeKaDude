@@ -11,6 +11,5 @@ public interface EventDAO {
 	public void deleteEvent(int event_id);
 	public List<Event> getAllEvents(int user_id);
     public Event getEvent(int event_id);   
-    public List<Event> getAllEvents(int user_id, Date from, Date to);
-	
+    public List<Event> getEventsByDate(int user_id, Date from, Date to);
 }

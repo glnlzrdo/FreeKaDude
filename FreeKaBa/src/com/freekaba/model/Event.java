@@ -1,6 +1,7 @@
 package com.freekaba.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -14,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="event")
@@ -26,26 +28,32 @@ public class Event implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int event_id;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-	private User user;
+	@Column
+	private int user_id;
 	
 	@Column
 	private String description;
 	
-	@Temporal(TemporalType.DATE)
-	@Column
-	private Date date;
+	@Transient
+	private String startTime;
+
+	@Transient
+	private String endTime;
 	
 	@Column
-	private int allday;
+	private Date start;
+	
+	@Column
+	private Date end;
+	
 	
 	public Event() {}
 	
-	public Event(User user, String description, Date date) {
-		this.user = user;
+	public Event(int user_id, String description, String startTime, String endTime) {
+		this.user_id = user_id;
 		this.description = description;
-		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 	
 	public int getEvent_id() {
@@ -55,30 +63,55 @@ public class Event implements Serializable{
 		this.event_id = event_id;
 	}
 	
-	public User getUser() {
-		return user;
+	
+	public int getUser_id() {
+		return user_id;
 	}
-	public void setUser(User user) {
-		this.user = user;
+
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
 	}
+
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getDate() {
-		return date;
+	
+	public String getStartTime() {
+		return startTime;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
-	public int getAllday() {
-		return allday;
+
+	public String getEndTime() {
+		return endTime;
 	}
-	public void setAllday(int allday) {
-		this.allday = allday;
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+
+
 	
 	
 }

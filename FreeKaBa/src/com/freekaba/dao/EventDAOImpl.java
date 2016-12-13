@@ -1,5 +1,6 @@
 package com.freekaba.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.freekaba.model.Event;
+import com.freekaba.model.User;
 import com.freekaba.util.UserUtil;
 
 @Component
@@ -27,32 +29,44 @@ public class EventDAOImpl implements EventDAO{
 
 	@Override
 	public Event updateEvent(Event event) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession()
+				.update(event);
+		return event;
 	}
 
 	@Override
 	public void deleteEvent(int event_id) {
-		// TODO Auto-generated method stub
-		
+		Event event = (Event)getEvent(event_id);
+		sessionFactory.getCurrentSession()
+				.delete(event);
 	}
 
 	@Override
 	public List<Event> getAllEvents(int user_id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Event getEvent(int event_id) {
-		// TODO Auto-generated method stub
-		return null;
+		Event eventResult = (Event) sessionFactory.getCurrentSession()
+				.createQuery("FROM event WHERE event_id=?");
+		return eventResult;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Event> getAllEvents(int user_id, Date from, Date to) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Event> getEventsByDate(int user_id, Date from, Date to) { //TODO
+		
+		List<Event> listResult = new ArrayList<Event>();
+			listResult = (List<Event>) sessionFactory.getCurrentSession()
+				.createQuery("FROM Event WHERE user_id = :id AND (start BETWEEN :from AND :to)")
+				.setParameter("id", user_id)
+				.setParameter("from", from)
+				.setParameter("to", to)
+				.getResultList();
+				
+		return listResult;
 	}
 
 }

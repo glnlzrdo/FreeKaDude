@@ -130,7 +130,8 @@ div.controls.edit-control,
 }
 
 .button-holder.right {
-    float: right
+    float: right;
+    margin-top: -5px;
 }
 
 .footer {
@@ -153,10 +154,15 @@ div.controls.edit-control,
     margin-left: 30%;
     margin-right: 30%;
     min-height: 300px;
+    height: 335px;
     min-width: 550px;
     border: 1px solid #00a8fc;
     background-color: white;
     z-index: 100;
+}
+
+#login-button {
+	margin-top: 5px;
 }
 
 #myModal {
@@ -228,4 +234,26 @@ div.controls.edit-control,
 
 #modal-title-head {
     color: #00a8fc;
+}
+
+.error {
+	padding: 15px;
+	margin-top: -5px;
+	margin-bottom: 15px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+}
+
+.msg {
+	padding: 15px;
+	margin-top: -5px;
+	margin-bottom: 15px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
 }
