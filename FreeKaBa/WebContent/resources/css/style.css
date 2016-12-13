@@ -15,6 +15,7 @@ body {
 .calendar-container,
 .dude-board-header,
 .dude-board-content {
+	font-family: 'LatoWeb';
     margin: 20px;
     padding: 20px;
     background-color: white;
@@ -68,6 +69,11 @@ body {
     color: #00a8fc;
     font-size: 18px;
     margin-right: 20px;
+    margin-top: 15px;
+}
+
+dude-match-headers {
+	padding-top: 15px;
 }
 
 .calendar-container h2,
@@ -130,7 +136,8 @@ div.controls.edit-control,
 }
 
 .button-holder.right {
-    float: right
+    float: right;
+    margin-top: -5px;
 }
 
 .footer {
@@ -153,10 +160,15 @@ div.controls.edit-control,
     margin-left: 30%;
     margin-right: 30%;
     min-height: 300px;
+    height: 335px;
     min-width: 550px;
     border: 1px solid #00a8fc;
     background-color: white;
     z-index: 100;
+}
+
+#login-button {
+	margin-top: 5px;
 }
 
 #myModal {
@@ -228,4 +240,58 @@ div.controls.edit-control,
 
 #modal-title-head {
     color: #00a8fc;
+}
+
+.error {
+	padding: 15px;
+	margin-top: -5px;
+	margin-bottom: 15px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+}
+
+.msg {
+	padding: 15px;
+	margin-top: -5px;
+	margin-bottom: 15px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+#search-members {
+	padding: 10px;
+	margin-left: 20px;
+	float: left;
+	width: 20%;
+	min-width: 100px;
+	background-color: #EEEFEF;
+	border: 2px solid gray;
+}
+
+#search-parameters {
+	padding: 15px;
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-right: 30px;
+	float: right;
+	width: 60%;
+	min-width: 220px;
+	background-color: #EEEFEF;
+	border: 2px solid gray;
+}
+
+th {
+	font-weight: bold;
+    color: #00a8fc;
+}
+
+.friend-list-names {
+	text-align: left;
+	padding-left: 10px;
 }

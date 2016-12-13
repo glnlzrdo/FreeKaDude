@@ -38,10 +38,18 @@ public class User implements Serializable{
 	@Column
 	private String email;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "group_id")
-	private Group group;
+	@Column
+	private int group_id;
 	
+	public User(){}
+	
+	public User(int user_id, String username, String password, String email) {
+		this.user_id = user_id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
+
 	public int getUser_id() {
 		return user_id;
 	}
@@ -79,13 +87,16 @@ public class User implements Serializable{
 		this.email = email;
 	}
 	
-	public Group getGroup() {
-		return group;
-	}
-	public void setGroup(Group group) {
-		this.group = group;
-	}
 	
+	
+	public int getGroup_id() {
+		return group_id;
+	}
+
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
+	}
+
 	@Override
 	public String toString(){
 		return "User{" +

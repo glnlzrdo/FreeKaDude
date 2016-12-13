@@ -42,6 +42,19 @@ public class UserDAOImpl implements UserDAO{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getFriends(int userid, int groupid) { //TODO incorporate password
+		List<User> users = new ArrayList<User>();
+		String hql = "FROM User WHERE group_id=? AND user_id IS NOT ?";
+		users = (List<User>) sessionFactory.getCurrentSession()
+				.createQuery(hql)
+				.setParameter(0, groupid)
+				.setParameter(1, userid)
+				.getResultList();
+		return users;
+	}
+	
 	
 	
 }
