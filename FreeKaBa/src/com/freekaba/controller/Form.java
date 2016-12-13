@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freekaba.dao.EventDAO;
 import com.freekaba.dao.UserDAO;
 import com.freekaba.dummydata.Dummy;
+import com.freekaba.model.CalendarData;
 import com.freekaba.model.Event;
 import com.freekaba.model.User;
 
@@ -54,9 +57,13 @@ public class Form {
 			@RequestParam(value = "error", required = false) String error){
 		User userResult = userDao.getUser(user.getUsername(), user.getPassword());
 		
+		
 		ModelAndView model = new ModelAndView();
 		if(userResult != null) {
+			List<User> friends = userDao.getFriends(userResult.getUser_id(), userResult.getGroup_id());
 			model.addObject("user", userResult);
+			model.addObject("friends", friends);
+			model.addObject("login", "new");
 			model.setViewName("main");
 			return model;
 		} else {
@@ -103,6 +110,37 @@ public class Form {
 		return model;
 	}
 	
+	//turBORAT
+		@ResponseBody
+		@RequestMapping(value = "/delete", method = RequestMethod.POST)
+		public String deleteEvent(Event event, User user) throws JsonProcessingException, ParseException {
+			System.out.println(event.getEvent_id());
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonInString = mapper.writeValueAsString(event);
+			
+			eventDao.deleteEvent(event.getEvent_id());		
+			return jsonInString;
+		}
+		
+		
+		
+		//turBORAT
+		@ResponseBody
+		@RequestMapping(value ="/loadEvents", method = RequestMethod.POST)
+		public String loadEventsFromDbToCal(User user) throws JsonProcessingException {
+			
+			ObjectMapper mapper = new ObjectMapper();
+			List<Event> events = eventDao.getAllEvents(9);		
+			List<CalendarData> calData = new ArrayList<CalendarData>();		
+			for (Event event : events) {
+				calData.add(new CalendarData(event.getEvent_id(), event.getDescription(), event.getStart().toString(), event.getEnd().toString()));
+			}
+			
+			String  jsonInString = mapper.writeValueAsString(calData);		
+			String temp = jsonInString.substring(1,jsonInString.length() - 1);		
+			return jsonInString;
+		}
+		
 	//EMAN
 		@ResponseBody
 		@RequestMapping(value = "/process", method = RequestMethod.POST)
@@ -120,7 +158,7 @@ public class Form {
 			event.setEnd(sdf.parse(event.getEndTime()));
 			System.out.println(sdf.parse(event.getStartTime()));
 			
-			event.setUser_id(Dummy.createDummyUser2().getUser_id()); //DUMMY
+			event.setUser_id(user.getUser_id()); //DUMMY
 			
 			int num = eventDao.createEvent(event);
 			System.out.println(num);
@@ -137,19 +175,20 @@ public class Form {
 		}
 		
 		//EMAN
-		@RequestMapping(value = "Search", method = RequestMethod.POST)
-		public void searchFreeTime(@RequestParam("searchFrom") String from,
-				@RequestParam("searchTo") String to) throws ParseException {
-			
+		@ResponseBody
+		@RequestMapping(value = "/Search", method = RequestMethod.POST)
+		public ModelAndView searchFreeTime(@RequestParam("searchFrom") String from,
+				@RequestParam("searchTo") String to, @RequestParam("checkedfriends") List<String> friendIds, User user) throws ParseException {
 			String toDate = to.substring(0, 10);
 			String fromDate = from.substring(0, 10);
 		
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
-			List<User> userList = new ArrayList<>(); //Get all user_ids to search
-			userList.add(Dummy.createDummyUser1());	//dummy
-			userList.add(Dummy.createDummyUser2()); //TEST
-			userList.add(Dummy.createDummyUser3());
+			List<Integer> userIds = new ArrayList<>(); //Get all user_ids to search
+			userIds.add(user.getUser_id());	//dummy
+			for(String userId : friendIds){
+				userIds.add(Integer.parseInt(userId));
+	 		}
 			
 			Date searchFrom = sdf.parse(from);  
 			Date searchTo = sdf.parse(to);
@@ -162,7 +201,7 @@ public class Form {
 			
 			HashMap<String, ArrayList<Integer>> eventHoursMap = new HashMap<>(); //Each list will contain a user's collection of events
 			//Retrieve all events for each user, between the searchdates
-			for(User user : userList){
+			for(Integer user2 : userIds){
 				List<Event> listEvent = new ArrayList<>();
 				listEvent = eventDao.getEventsByDate(user.getUser_id(), searchFrom, sdf.parse(ldTo.plusDays(1).toString()));
 				//listListEvent.add((ArrayList<Event>) listEvent);
@@ -204,52 +243,68 @@ public class Form {
 				searchHours.removeAll(list);
 			}
 			System.out.println("Common Free times" + searchHours);
-			Map <Integer, Integer>freeTimeRanges = new TreeMap();
 			
-			ArrayList<Integer> timeList = new ArrayList<>();
-			timeList.add(searchHours.get(0));
-			for(int i = 0; i< searchHours.size(); i++){
-				if(i != searchHours.size()-1 && searchHours.get(i+1) - searchHours.get(i) == 1){
-					timeList.add(searchHours.get(i+1));
-				}else{
-					freeTimeRanges.put(timeList.get(0), timeList.get(timeList.size()-1));
-					timeList.clear();
-					if(i != searchHours.size()-1)
+			List<User> friends = userDao.getFriends(user.getUser_id(), user.getGroup_id());
+			
+			if(searchHours.size() != 0){
+				
+				Map <Integer, Integer>freeTimeRanges = new TreeMap();
+				
+				ArrayList<Integer> timeList = new ArrayList<>();
+				timeList.add(searchHours.get(0));
+				for(int i = 0; i< searchHours.size(); i++){
+					if(i != searchHours.size()-1 && searchHours.get(i+1) - searchHours.get(i) == 1){
 						timeList.add(searchHours.get(i+1));
+					}else{
+						freeTimeRanges.put(timeList.get(0), timeList.get(timeList.size()-1));
+						timeList.clear();
+						if(i != searchHours.size()-1)
+							timeList.add(searchHours.get(i+1));
+					}
 				}
-			}
-			System.out.println(freeTimeRanges.toString());
-			
-			ArrayList<ArrayList> dateListList = new ArrayList();
-			
-			for (Map.Entry<Integer, Integer> entry : freeTimeRanges.entrySet()) {
-				ArrayList dateList = new ArrayList();
-			    int key = entry.getKey();
-			    int value = entry.getValue();
-			    
-			    int dayPastStart = key/24;
-			    int hourStart = key%24;
-			    int dayPastEnd = value/24;
-			    int hourEnd = value%24;
-			    LocalDateTime freeTimeStartLDT = ldFrom.atTime(0, 0).plusDays(dayPastStart).plusHours(hourStart);
-			    LocalDateTime freeTimeEndLDT = ldFrom.atTime(0, 0).plusDays(dayPastEnd).plusHours(hourEnd);
-			    Date freeTimeStartToDate =  Date.from(freeTimeStartLDT.atZone(ZoneId.systemDefault()).toInstant());
-			    Date freeTimeEndToDate =  Date.from(freeTimeEndLDT.atZone(ZoneId.systemDefault()).toInstant());
-			    
-			    dateList.add(freeTimeStartToDate);
-			    dateList.add(freeTimeEndToDate);
-			    dateListList.add(dateList);
-			    System.out.println("from " + key + " to " + value);
-			}
-			
-			System.out.println("Free on:");
-			for (ArrayList list : dateListList){
-				System.out.println("From " + list.get(0) + " to " + list.get(1));
-			}
-			
-	/*		LocalDateTime startExactTime = ldFrom.atTime(0, 0).plusHours(searchHours.get(0));
+				System.out.println(freeTimeRanges.toString());
+				
+				ArrayList<ArrayList> dateListList = new ArrayList();
+				
+				int j = 1;
+				for (Map.Entry<Integer, Integer> entry : freeTimeRanges.entrySet()) {
+					ArrayList dateList = new ArrayList();
+					
+				    int key = entry.getKey();
+				    int value = entry.getValue();
+				    
+				    int dayPastStart = key/24;
+				    int hourStart = key%24;
+				    int dayPastEnd = value/24;
+				    int hourEnd = value%24;
+				    LocalDateTime freeTimeStartLDT = ldFrom.atTime(0, 0).plusDays(dayPastStart).plusHours(hourStart);
+				    LocalDateTime freeTimeEndLDT = ldFrom.atTime(0, 0).plusDays(dayPastEnd).plusHours(hourEnd);
+				    
+				    LocalDateTime tempDateTime = LocalDateTime.from( freeTimeStartLDT );
+				    long days = tempDateTime.until( freeTimeEndLDT, ChronoUnit.DAYS);
+				    tempDateTime = tempDateTime.plusDays( days );
 
-			System.out.println("Free from " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(startExactTime));*/
+				    long hours = tempDateTime.until( freeTimeEndLDT, ChronoUnit.HOURS);
+				    tempDateTime = tempDateTime.plusHours( hours );
+				    
+				    String freeTimeLength =  days + " day/s " + hours + " hours ";
+				    
+				    dateList.add(DateTimeFormatter.ofPattern("uuuu MMM d, h a").format(freeTimeStartLDT));
+				    dateList.add(DateTimeFormatter.ofPattern("uuuu MMM d, h a").format(freeTimeEndLDT));
+				    dateList.add(freeTimeLength);
+				    dateListList.add(dateList);
+				}
+				ModelAndView model = new ModelAndView("main");
+				
+				model.addObject("friends", friends);
+				model.addObject("dateListList", dateListList);
+				System.out.println(dateListList);
+				return model;
+			} else {
+				ModelAndView model = new ModelAndView("main");
+				model.addObject("friends", friends);
+				return model;
+			}
+			
 		}
-	
 }

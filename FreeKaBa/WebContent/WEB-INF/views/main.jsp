@@ -51,20 +51,60 @@
             <div class="dude-board-search">
 	            <h4>Search Common Free Time</h4>
 	            <form action="Search" method="post">
-	            	From: <input name="searchFrom" type="date"> Until: <input name="searchTo" type="date">
-	            	<input type="submit" name="search" value="Search">
+	            	<div id="search-members">
+	            		<table>
+	            			<tr>
+	            				<th></th>
+	            				<th>Friends</th>
+	            			</tr>
+	            			<c:forEach items="${friends}" var="friends">
+	            			<tr>
+	            				<td><input type="checkbox" value="${friends.user_id}" name="checkedfriends"/></td>
+	            				<td class="friend-list-names">${friends.firstname}</td>
+	            			</c:forEach>
+	            		</table>
+	            	</div>
+	            	<div id="search-parameters">
+		            	From: <input name="searchFrom" type="date" required="required"><br/>
+		            	Until: <input name="searchTo" type="date" required="required">
+		            	<input id="searchbutton" class="ui-button ui-widget ui-corner-all" type="submit" name="search" value="Search" disabled="disabled">
+	            	</div>
 	            </form>
 	        </div>
         </div>
         <div class="dude-board-content">
-            <div class="libre-matches">
-                <label class="dude-matches">Charles and You are both free on:</label>
-                <label class="date-time-matches">Monday, 12:00 PM - 1:00 PM</label>
+        
+        <c:choose>
+        <c:when test="${not empty dateListList}">
+      		<div class="dude-match-headers">
+        		<label class="dude-matches">
+        		<c:forEach var="friend" items="${friends}">
+        			${friend.firstname},
+        		</c:forEach>
+        			and You are free on
+        		</label>
+        	</div>
+        	<c:forEach var="dateList" items="${dateListList}" >
+        	<div class="libre-matches">
+	                <label class="date-time-matches">${dateList[0]} until ${dateList[1]}</label>
+	                <label class="date-time-matches">Length of Free Time: ${dateList[2]}</label>
+	        </div>
+            </c:forEach>
+      	</c:when>
+      	<c:when test="${not empty login}">
+      		<div class="libre-matches">
+                <label class="dude-matches">Start searching your common free time.</label>
+                <label class="date-time-matches">No search results to view yet.</label>
             </div>
-             <div class="libre-matches">
-                <label class="dude-matches">Charles, Eman and You are both free on:</label>
-                <label class="date-time-matches">Thursday, 12:00 PM - 1:00 PM</label>
+      	</c:when>
+      	<c:otherwise>
+      		<div class="libre-matches">
+                <label class="dude-matches">Unfortunately, you guys have no common free time.</label>
+                <label class="date-time-matches">That was unfortunate. :(</label>
             </div>
+      	</c:otherwise>
+      	</c:choose>
+      	
         </div>
     </div>
     <div class="footer"></div>

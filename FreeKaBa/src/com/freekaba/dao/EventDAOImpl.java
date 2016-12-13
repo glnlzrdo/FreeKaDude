@@ -36,21 +36,23 @@ public class EventDAOImpl implements EventDAO{
 
 	@Override
 	public void deleteEvent(int event_id) {
-		Event event = (Event)getEvent(event_id);
-		sessionFactory.getCurrentSession()
-				.delete(event);
+		Event myevent = (Event) getEvent(event_id);
+		sessionFactory.getCurrentSession().delete(myevent);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Event> getAllEvents(int user_id) {
-		
-		return null;
+		List<Event> events = new ArrayList<>();
+				events = (List<Event>) sessionFactory.getCurrentSession().createQuery("FROM Event WHERE user_id = :id")
+						.setParameter("id", user_id).getResultList();
+		return events;
 	}
 
 	@Override
 	public Event getEvent(int event_id) {
-		Event eventResult = (Event) sessionFactory.getCurrentSession()
-				.createQuery("FROM event WHERE event_id=?");
+		Event eventResult = (Event) sessionFactory.getCurrentSession().createQuery("FROM Event WHERE event_id= :id")
+					.setParameter("id", event_id).getSingleResult();
 		return eventResult;
 	}
 

@@ -8,77 +8,91 @@ $(document).ready(function () {
     var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
     var dstart, dend, currentEvent, newEvent;
     // page is now ready, initialize the calendar...
+    
+    var json_events;
+    
+    //Start-Ajax//
+    $.ajax({
+    	   url: 'loadEvents',
+    	   type: 'POST',
+    	   data: 'json',
+    	   //async: false,
+    	   success: function(response){
+    	     json_events = response;    	     
+    	////////////////////////////////////////////////////////
+    	////////////   Calendar Initialization  ////////////////
+    	////////////////////////////////////////////////////////     
+    	     var calendar = $('#calendar').fullCalendar({
+    	         theme: true,
+    	         //default: true,
+    	         header: {
+    	             left: 'month,agendaWeek,agendaDay,list',
+    	             center: 'title'
+    	         },
+    	         editable: true,
+    	         selectable: true,
+    	         //eventLimit: true, // allow "more" link when too many events
+    	         navLinks: true,
+ 	         
+    	         events: JSON.parse(json_events),
+    	         
+    	         eventMouseover: function (event, jsEvent, view) {
+    	             if (view.name !== 'agendaDay') {
+    	                 $(jsEvent.target).attr('title', event.title);
+    	             }
+    	         },
 
-    var calendar = $('#calendar').fullCalendar({
-        theme: true,
-        //default: true,
-        header: {
-            left: 'month,agendaWeek,agendaDay,list',
-            center: 'title'
-        },
-        editable: true,
-        selectable: true,
-        //eventLimit: true, // allow "more" link when too many events
-        navLinks: true,
-        events: [{
-            title: 'Meeting',
-            start: TODAY + 'T10:30:00',
-            end: TODAY + 'T12:30:00'
-        }, {
-            title: 'Meeting with Eman & Charles',
-            start: YM + '-12',
-            end: YM + '-14'
-        }, {
-            title: 'Project Deadline',
-            start: YM + '-14',
-            end: YM + '-15'
-        }],
-        eventMouseover: function (event, jsEvent, view) {
-            if (view.name !== 'agendaDay') {
-                $(jsEvent.target).attr('title', event.title);
-            }
-        },
+    	         eventClick: function (calEvent, jsEvent, view) {
+    	             $('#inputActivity').val(calEvent.title);
+    	             var starttime = moment(calEvent.start).format('dddd MMM DD, h:mm a');
+    	             var endtime = moment(calEvent._end).format('dddd MMM DD, h:mm a');
+    	             var mywhen = starttime + ' - ' + endtime;
+    	             $('#createEventModal #editStartTime').val(moment(calEvent.start));
+    	             $('#createEventModal #editEndTime').val(moment(calEvent._end));
 
-        eventClick: function (calEvent, jsEvent, view) {
-            // var r = confirm("Delete " + calEvent.title + "?");
-            // if (r === true) {
-            //     $('#calendar').fullCalendar('removeEvents', calEvent._id);
-            // }
+    	             $('#editEventModal #editWhen').text(mywhen);
+    	             $('#editEventModal').modal('show');
+    	             dstart = calEvent.start;
+    	             dend = calEvent._end;
+    	             currentEvent = calEvent;
 
-            $('#inputActivity').val(calEvent.title);
-            var starttime = moment(calEvent.start).format('dddd MMM DD, h:mm a');
-            var endtime = moment(calEvent._end).format('dddd MMM DD, h:mm a');
-            var mywhen = starttime + ' - ' + endtime;
-            $('#createEventModal #editStartTime').val(moment(calEvent.start));
-            $('#createEventModal #editEndTime').val(moment(calEvent._end));
+    	         },
 
-            $('#editEventModal #editWhen').text(mywhen);
-            $('#editEventModal').modal('show');
-            dstart = calEvent.start;
-            dend = calEvent._end;
-            currentEvent = calEvent;
+    	         selectHelper: true,
 
-        },
+    	         select: function (start, end) {
+    	             $('#activityName').val("");
+    	             var starttime = moment(start).format('dddd MMM DD, h:mm a');
+    	             var endtime = moment(end).format('h:mm a');
+    	             var mywhen = starttime + ' - ' + endtime;
+    	             $('#createEventModal #apptStartTime').val(moment(start));
+    	             $('#createEventModal #apptEndTime').val(moment(end));
 
-        selectHelper: true,
-
-        select: function (start, end) {
-            $('#activityName').val("");
-            var starttime = moment(start).format('dddd MMM DD, h:mm a');
-            var endtime = moment(end).format('h:mm a');
-            var mywhen = starttime + ' - ' + endtime;
-            $('#createEventModal #apptStartTime').val(moment(start));
-            $('#createEventModal #apptEndTime').val(moment(end));
-
-            $('#createEventModal #when').text(mywhen);
-            $('#createEventModal').modal('show');
-            dstart = start;
-            dend = end;
-            
-        }
+    	             $('#createEventModal #when').text(mywhen);
+    	             $('#createEventModal').modal('show');
+    	             dstart = start;
+    	             dend = end;
+    	             
+    	         }
 
 
-    });
+    	     });
+    	     
+    	     
+    	   },
+    	   error: function(e){
+               console.log(e.responseText);
+             } 
+    	   
+    	////////////////////////////////////////////////////////
+       	////////////   Calendar Initialization  ////////////////
+       	//////////////////////////////////////////////////////// 
+    	   
+    	}); // End-Ajax //
+
+ 
+    
+    
 
     $('#prompt-save').on('click', function (e) {
         // We don't want this to act as a link so cancel the link action
@@ -86,14 +100,23 @@ $(document).ready(function () {
         $("#createEventModal").modal('hide');
         var title = $('#activityName').val();
         var eventData;
+        
+        var trimStart = new Date(moment(dstart).format('dddd MMM DD, YYYY h:mm a'));
+        if (trimStart.getMinutes() == 30)
+        	trimStart.setMinutes(trimStart.getMinutes() - 30);
+        var trimEnd = new Date(moment(dend).format('dddd MMM DD, YYYY h:mm a'));
+        if (trimEnd.getMinutes() == 30)
+        	trimEnd.setMinutes(trimEnd.getMinutes() - 30);
+        console.log(moment(trimStart).format('dddd MMM DD, YYYY h:mm a'));
+        
+        
         if (title) {
             eventData = {
                 title: title,
-                start: dstart,
-                end: dend
+                start: moment(trimStart),
+                end: moment(trimEnd)
             };
-            
-            
+ 
             //AJAX feature to save to database            
             $.ajax({
                 url: 'process',
@@ -106,8 +129,7 @@ $(document).ready(function () {
                 error: function(e){
                   console.log(e.responseText);
                 }
-              });
-            
+              });            
         }
         $('#calendar').fullCalendar('unselect');
     });
@@ -118,30 +140,48 @@ $(document).ready(function () {
         var title = $('#inputActivity').val();
         var eventData;
         if (title) {
-//            eventData = {
-//                title: title,
-//                start: dstart,
-//                end: dend
-//            };
         	currentEvent.title = title;
         	currentEvent.start = dstart;
         	currentEvent.end = dend;
             $('#calendar').fullCalendar('updateEvent', currentEvent);
-            //$('#calendar').fullCalendar('removeEvents', currentEvent._id);
-            //$('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
         }
         $('#calendar').fullCalendar('unselect');
     });
 
     $('#prompt-delete').on('click', function (e) {
         e.preventDefault();
+        
          var r = confirm("Are you sure? This cannot be undone.");
              if (r === true) {
-                 $('#calendar').fullCalendar('removeEvents', currentEvent._id);
+            	 $.ajax({
+                     url: 'delete',
+                     data: 'event_id=' + currentEvent._id,
+                     type: 'POST',
+                     dataType: 'json',
+                     success: function(response){
+                    	 $('#calendar').fullCalendar('removeEvents', currentEvent._id);
+                     },
+                     error: function(e){
+                       console.log(e.responseText);
+                     }
+                   });                 
                  $("#editEventModal").modal('hide');
              }
         $('#calendar').fullCalendar('unselect');
     });
+    
+	$('#createEventModal').on('shown.bs.modal', function () {
+    	   $('#activityName').focus();
+    	});
+    
+	$('#editEventModal').on('shown.bs.modal', function () {
+ 	   $('#inputActivity').focus();
+ 	});
 
+	var checkboxes = $("input[type='checkbox']");
+    var submitButt = $("#searchbutton");
+	checkboxes.click(function() {
+	    submitButt.attr("disabled", !checkboxes.is(":checked"));
+	});
+	
 });
-
