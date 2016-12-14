@@ -67,17 +67,24 @@ public class Form {
 			model.setViewName("main");
 			return model;
 		} else {
-			model.addObject("error", "Invalid username and password!");
+			model.addObject("error", "Invalid username or password!");
 			model.setViewName("login");
 			return model;
 		}
 	}
 	
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
-	public String registerUser(User user, String username, String email) {
+	public ModelAndView registerUser(User user, String username, String email) {
 		user.setGroup_id(1); //placeholder
-		userDao.createUser(user, user.getUsername(), user.getEmail());
-		return "redirect:login";
+		ModelAndView model = new ModelAndView();
+		int checker = userDao.createUser(user, user.getUsername(), user.getEmail());
+		if(checker==0) {
+			model.addObject("regfail", "User already exists.");
+		} else {
+			model.addObject("regok", "New account created.");
+		}
+		model.setViewName("login");
+		return model;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
@@ -88,26 +95,9 @@ public class Form {
 		
 		HttpSession session = request.getSession(false);
 		if(session==null || !request.isRequestedSessionIdValid()) {
-			model.addObject("msg", "You've been successfully logged out.");
+			model.addObject("msg", "You have successfully logged out.");
 		}
 		model.setViewName("login");
-		return model;
-	}
-	
-	@RequestMapping(params = "addEvent", method = RequestMethod.POST)
-	public ModelAndView getAjax(User user){
-		ModelAndView model = new ModelAndView("home");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = null;
-		try {
-			jsonInString = mapper.writeValueAsString(user);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println(jsonInString.toString());
-		
 		return model;
 	}
 	
@@ -115,10 +105,9 @@ public class Form {
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteEvent(Event event, User user) throws JsonProcessingException, ParseException {
-		System.out.println(event.getEvent_id());
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(event);
-		
+		eventDao.deleteEvent(event.getEvent_id());
 		return jsonInString;
 	}
 		
@@ -134,36 +123,51 @@ public class Form {
 			calData.add(new CalendarData(event.getEvent_id(), event.getDescription(), event.getStart().toString(), event.getEnd().toString()));
 		}
 		
-		String  jsonInString = mapper.writeValueAsString(calData);		
-		String temp = jsonInString.substring(1,jsonInString.length() - 1);		
+		String  jsonInString = mapper.writeValueAsString(calData);	
 		return jsonInString;
 	}
-		
-	//EMAN
-	@ResponseBody
-	@RequestMapping(value = "/process", method = RequestMethod.POST)
-	public String getSearchResultViaAjax(Event event, User user) throws JsonProcessingException, ParseException {
+	
+	//turBORAT
+		@ResponseBody
+		@RequestMapping(value = "/update", method = RequestMethod.POST)
+		public String updateEvent(Event event, User user) throws JsonProcessingException, ParseException {			
 			
-		ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper mapper = new ObjectMapper();
+			String jsonInString = mapper.writeValueAsString(event);
+			Event dbEvent = eventDao.getEvent(event.getEvent_id());
+			System.out.println("=======================");
+			System.out.println(event.getDescription() + "\n" + event.getStart() + "\n" + event.getEnd());
+			dbEvent.setDescription(event.getDescription());
+			//dbEvent.setStart(event.getStart());
+			//dbEvent.setEnd(event.getEnd());
+			eventDao.updateEvent(dbEvent);
+			return jsonInString;
+		}
+		
+	//EMAN //turBORAT
+		@ResponseBody
+		@RequestMapping(value = "/process", method = RequestMethod.POST)
+		public String getSearchResultViaAjax(Event event, User user) throws JsonProcessingException, ParseException {			
+			
+			String pattern = "yyyy-MM-dd HH:mm:ss";
+			SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+			
+			event.setStart(sdf.parse(event.getStartTime()));
+			event.setEnd(sdf.parse(event.getEndTime()));
+			System.out.println(sdf.parse(event.getStartTime()));
+			
+			event.setUser_id(user.getUser_id());
+			
+			eventDao.createEvent(event);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			Event lastEvent = eventDao.getLastEvent(user.getUser_id());
+			//Object to JSON in String
+			String jsonInString = mapper.writeValueAsString(lastEvent.getEvent_id());
+			
+			return jsonInString;
 
-		//Object to JSON in String
-		String jsonInString = mapper.writeValueAsString(event);
-		
-		String pattern = "yyyy-MM-dd HH:mm:ss";
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		
-		event.setStart(sdf.parse(event.getStartTime()));
-		event.setEnd(sdf.parse(event.getEndTime()));
-		System.out.println(sdf.parse(event.getStartTime()));
-		
-		event.setUser_id(user.getUser_id()); //DUMMY
-		
-		int num = eventDao.createEvent(event);
-		System.out.println(num);
-		
-		return jsonInString;
-
-	}
+		}
 		
 	@RequestMapping(value="GetAllData", method = RequestMethod.POST)
 	public String getAllDate(User user){
@@ -240,7 +244,8 @@ public class Form {
 		}
 		System.out.println("Common Free times" + searchHours);
 		
-		List<User> friends = userDao.getFriends(user.getUser_id(), user.getGroup_id());
+		List<User> friendstop = userDao.getFriends(user.getUser_id(), user.getGroup_id());
+		List<User> friendsbottom = userDao.getCheckedFriends(userIds);
 		
 		if(searchHours.size() != 0){
 			
@@ -292,13 +297,14 @@ public class Form {
 			}
 			ModelAndView model = new ModelAndView("main");
 				
-			model.addObject("friends", friends);
+			model.addObject("friends", friendstop);
+			model.addObject("friendsbottom", friendsbottom);
 			model.addObject("dateListList", dateListList);
 			System.out.println(dateListList);
 			return model;
 		} else {
 			ModelAndView model = new ModelAndView("main");
-			model.addObject("friends", friends);
+			model.addObject("friends", friendstop);
 			return model;
 		}
 		
