@@ -17,21 +17,35 @@ public class UserDAOImpl implements UserDAO{
 	@Autowired
     private SessionFactory sessionFactory;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public int createUser(User user) {
-		int id = (int)sessionFactory.getCurrentSession()
-				.save(user);
-		return id;
+	public int createUser(User user, String username, String email) {
+		List<User> users = new ArrayList<User>();
+		String sql = "FROM User WHERE UPPER(username)=? OR UPPER(email)=?";
+		users = (List<User>) sessionFactory.getCurrentSession()
+				.createQuery(sql)
+				.setParameter(0, username.toUpperCase())
+				.setParameter(1, email.toUpperCase())
+				.getResultList();
+		if(users.size() <= 0) {
+			int id = (int)sessionFactory.getCurrentSession()
+					.save(user);
+			System.out.println("ok");
+			return id;
+		} else {
+			System.out.println("Already exists");
+			return 0;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public User getUser(String username, String password) { //TODO incorporate password
+	public User getUser(String username, String password) {
 		List<User> users = new ArrayList<User>();
-		String hql = "FROM User WHERE username=? AND password=?";
+		String hql = "FROM User WHERE UPPER(username)=? AND password=?";
 		users = (List<User>) sessionFactory.getCurrentSession()
 				.createQuery(hql)
-				.setParameter(0, username)
+				.setParameter(0, username.toUpperCase())
 				.setParameter(1, password)
 				.getResultList();
 
