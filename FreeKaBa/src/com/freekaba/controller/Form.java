@@ -94,31 +94,13 @@ public class Form {
 		return model;
 	}
 	
-	@RequestMapping(params = "addEvent", method = RequestMethod.POST)
-	public ModelAndView getAjax(User user){
-		ModelAndView model = new ModelAndView("home");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = null;
-		try {
-			jsonInString = mapper.writeValueAsString(user);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println(jsonInString.toString());
-		
-		return model;
-	}
-	
 	//turBORAT
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteEvent(Event event, User user) throws JsonProcessingException, ParseException {
-		System.out.println(event.getEvent_id());
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonInString = mapper.writeValueAsString(event);
-		
+		eventDao.deleteEvent(event.getEvent_id());
 		return jsonInString;
 	}
 		
@@ -135,19 +117,31 @@ public class Form {
 		}
 		
 		String  jsonInString = mapper.writeValueAsString(calData);		
-		String temp = jsonInString.substring(1,jsonInString.length() - 1);		
 		return jsonInString;
 	}
+	
+	//turBORAT
+	@ResponseBody
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String updateEvent(Event event, User user) throws JsonProcessingException, ParseException {			
 		
-	//EMAN
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonInString = mapper.writeValueAsString(event);
+		Event dbEvent = eventDao.getEvent(event.getEvent_id());
+		System.out.println("=======================");
+		System.out.println(event.getDescription() + "\n" + event.getStart() + "\n" + event.getEnd());
+		dbEvent.setDescription(event.getDescription());
+		//dbEvent.setStart(event.getStart());
+		//dbEvent.setEnd(event.getEnd());
+		eventDao.updateEvent(dbEvent);
+		return jsonInString;
+
+	}
+		
+	//EMAN //turBORAT
 	@ResponseBody
 	@RequestMapping(value = "/process", method = RequestMethod.POST)
-	public String getSearchResultViaAjax(Event event, User user) throws JsonProcessingException, ParseException {
-			
-		ObjectMapper mapper = new ObjectMapper();
-
-		//Object to JSON in String
-		String jsonInString = mapper.writeValueAsString(event);
+	public String getSearchResultViaAjax(Event event, User user) throws JsonProcessingException, ParseException {			
 		
 		String pattern = "yyyy-MM-dd HH:mm:ss";
 		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -156,20 +150,19 @@ public class Form {
 		event.setEnd(sdf.parse(event.getEndTime()));
 		System.out.println(sdf.parse(event.getStartTime()));
 		
-		event.setUser_id(user.getUser_id()); //DUMMY
+		event.setUser_id(user.getUser_id());
 		
-		int num = eventDao.createEvent(event);
-		System.out.println(num);
+		eventDao.createEvent(event);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Event lastEvent = eventDao.getLastEvent(user.getUser_id());
+		//Object to JSON in String
+		String jsonInString = mapper.writeValueAsString(lastEvent.getEvent_id());
 		
 		return jsonInString;
 
 	}
-		
-	@RequestMapping(value="GetAllData", method = RequestMethod.POST)
-	public String getAllDate(User user){
-		//TODO still needed?	
-		return null;
-	}
+	
 		
 	//EMAN
 	@ResponseBody
@@ -186,6 +179,8 @@ public class Form {
 		for(String userId : friendIds){
 			userIds.add(Integer.parseInt(userId));
 		}
+		
+		
 		
 		Date searchFrom = sdf.parse(from);  
 		Date searchTo = sdf.parse(to);

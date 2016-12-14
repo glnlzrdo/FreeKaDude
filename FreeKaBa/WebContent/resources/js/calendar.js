@@ -11,92 +11,86 @@ $(document).ready(function () {
     
     var json_events;
     
-    //Start-Ajax//
-    $.ajax({
-    	   url: 'loadEvents',
-    	   type: 'POST',
-    	   data: 'json',
-    	   //async: false,
-    	   success: function(response){
-    	     json_events = response;    	     
-    	////////////////////////////////////////////////////////
-    	////////////   Calendar Initialization  ////////////////
-    	////////////////////////////////////////////////////////     
-    	     var calendar = $('#calendar').fullCalendar({
-    	         theme: true,
-    	         //default: true,
-    	         header: {
-    	             left: 'month,agendaWeek,agendaDay,list',
-    	             center: 'title'
-    	         },
-    	         editable: true,
-    	         selectable: true,
-    	         //eventLimit: true, // allow "more" link when too many events
-    	         navLinks: true,
- 	         
-    	         events: JSON.parse(json_events),
-    	         
-    	         eventMouseover: function (event, jsEvent, view) {
-    	             if (view.name !== 'agendaDay') {
-    	                 $(jsEvent.target).attr('title', event.title);
-    	             }
-    	         },
+    function loadCalendar() {
+	    //Start-Ajax//
+	    $.ajax({
+	    	   url: 'loadEvents',
+	    	   type: 'POST',
+	    	   data: 'json',
+	    	   //async: false,
+	    	   success: function(response){
+	    	     json_events = response;    	     
+	    	////////////////////////////////////////////////////////
+	    	////////////   Calendar Initialization  ////////////////
+	    	////////////////////////////////////////////////////////     
+	    	     var calendar = $('#calendar').fullCalendar({
+	    	         theme: true,
+	    	         //default: true,
+	    	         header: {
+	    	             left: 'month,agendaWeek,agendaDay,list',
+	    	             center: 'title'
+	    	         },
+	    	         editable: true,
+	    	         selectable: true,
+	    	         //eventLimit: true, // allow "more" link when too many events
+	    	         navLinks: true,
+	 	         
+	    	         events: JSON.parse(json_events),
+	    	         
+	    	         eventMouseover: function (event, jsEvent, view) {
+	    	             if (view.name !== 'agendaDay') {
+	    	                 $(jsEvent.target).attr('title', event.title);
+	    	             }
+	    	         },
+	
+	    	         eventClick: function (calEvent, jsEvent, view) {
+	    	             $('#inputActivity').val(calEvent.title);
+	    	             var starttime = moment(calEvent.start).format('dddd MMM DD, h:mm a');
+	    	             var endtime = moment(calEvent._end).format('dddd MMM DD, h:mm a');
+	    	             var mywhen = starttime + ' - ' + endtime;
+	    	             $('#createEventModal #editStartTime').val(moment(calEvent.start));
+	    	             $('#createEventModal #editEndTime').val(moment(calEvent._end));
+	
+	    	             $('#editEventModal #editWhen').text(mywhen);
+	    	             $('#editEventModal').modal('show');
+	    	             dstart = calEvent.start;
+	    	             dend = calEvent._end;
+	    	             currentEvent = calEvent;
+	    	         },
+	
+	    	         selectHelper: true,
+	
+	    	         select: function (start, end) {
+	    	             $('#activityName').val("");
+	    	             var starttime = moment(start).format('dddd MMM DD, h:mm a');
+	    	             var endtime = moment(end).format('h:mm a');
+	    	             var mywhen = starttime + ' - ' + endtime;
+	    	             $('#createEventModal #apptStartTime').val(moment(start));
+	    	             $('#createEventModal #apptEndTime').val(moment(end));
+	
+	    	             $('#createEventModal #when').text(mywhen);
+	    	             $('#createEventModal').modal('show');
+	    	             dstart = start;
+	    	             dend = end;	    	             
+	    	         }	
+	    	     });    	     
+	    	     
+	    	   },
+	    	   error: function(e){
+	               console.log(e.responseText);
+	             } 
+	    	   
+	    	////////////////////////////////////////////////////////
+	       	////////////   Calendar Initialization  ////////////////
+	       	//////////////////////////////////////////////////////// 
+	    	   
+	    	}); // End-Ajax //
+    }
 
-    	         eventClick: function (calEvent, jsEvent, view) {
-    	             $('#inputActivity').val(calEvent.title);
-    	             var starttime = moment(calEvent.start).format('dddd MMM DD, h:mm a');
-    	             var endtime = moment(calEvent._end).format('dddd MMM DD, h:mm a');
-    	             var mywhen = starttime + ' - ' + endtime;
-    	             $('#createEventModal #editStartTime').val(moment(calEvent.start));
-    	             $('#createEventModal #editEndTime').val(moment(calEvent._end));
-
-    	             $('#editEventModal #editWhen').text(mywhen);
-    	             $('#editEventModal').modal('show');
-    	             dstart = calEvent.start;
-    	             dend = calEvent._end;
-    	             currentEvent = calEvent;
-
-    	         },
-
-    	         selectHelper: true,
-
-    	         select: function (start, end) {
-    	             $('#activityName').val("");
-    	             var starttime = moment(start).format('dddd MMM DD, h:mm a');
-    	             var endtime = moment(end).format('h:mm a');
-    	             var mywhen = starttime + ' - ' + endtime;
-    	             $('#createEventModal #apptStartTime').val(moment(start));
-    	             $('#createEventModal #apptEndTime').val(moment(end));
-
-    	             $('#createEventModal #when').text(mywhen);
-    	             $('#createEventModal').modal('show');
-    	             dstart = start;
-    	             dend = end;
-    	             
-    	         }
-
-
-    	     });
-    	     
-    	     
-    	   },
-    	   error: function(e){
-               console.log(e.responseText);
-             } 
-    	   
-    	////////////////////////////////////////////////////////
-       	////////////   Calendar Initialization  ////////////////
-       	//////////////////////////////////////////////////////// 
-    	   
-    	}); // End-Ajax //
-
- 
+    loadCalendar();
     
     
-
-    $('#prompt-save').on('click', function (e) {
-        // We don't want this to act as a link so cancel the link action
-        e.preventDefault();
+    function addEvent() {
         $("#createEventModal").modal('hide');
         var title = $('#activityName').val();
         var eventData;
@@ -110,12 +104,7 @@ $(document).ready(function () {
         console.log(moment(trimStart).format('dddd MMM DD, YYYY h:mm a'));
         
         
-        if (title) {
-            eventData = {
-                title: title,
-                start: moment(trimStart),
-                end: moment(trimEnd)
-            };
+        if (title) {           
  
             //AJAX feature to save to database            
             $.ajax({
@@ -124,6 +113,12 @@ $(document).ready(function () {
                 type: 'POST',
                 dataType: 'json',
                 success: function(response){
+                	eventData = {
+                            title: title,
+                            start: moment(trimStart),
+                            end: moment(trimEnd),
+                            id: JSON.parse(response)
+                        };
               	  $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true	
                 },
                 error: function(e){
@@ -132,25 +127,69 @@ $(document).ready(function () {
               });            
         }
         $('#calendar').fullCalendar('unselect');
-    });
+    }
+    
+    $('#activityName').keypress(function (e) {
+    	 var key = e.which;
+    	 if(key == 13)  // the enter key code
+    	  {
+    	   addEvent();
+    	   return false;
+    	  }
+    	});   
+    
 
-    $('#prompt-update').on('click', function (e) {
+    $('#prompt-save').on('click', function (e) {
+    	// We don't want this to act as a link so cancel the link action
         e.preventDefault();
-        $("#editEventModal").modal('hide');
-        var title = $('#inputActivity').val();
-        var eventData;
+    	addEvent();
+    });
+    
+    
+    function updateEvent() {
+    	$("#editEventModal").modal('hide');
+        var title = $('#inputActivity').val();        
         if (title) {
         	currentEvent.title = title;
         	currentEvent.start = dstart;
         	currentEvent.end = dend;
-            $('#calendar').fullCalendar('updateEvent', currentEvent);
+        	
+        	$.ajax({
+                url: 'update',
+                data: 'event_id=' + currentEvent._id + '&description='+title,
+                type: 'POST',
+                dataType: 'json',
+                success: function(response){
+                	$('#calendar').fullCalendar('updateEvent', currentEvent);
+                },
+                error: function(e){
+                  console.log(e.responseText);
+                }
+              });                 
+        	
+        	
+        	
+            //$('#calendar').fullCalendar('updateEvent', currentEvent);
         }
         $('#calendar').fullCalendar('unselect');
+    }
+    
+    $('#inputActivity').keypress(function (e) {
+   	 var key = e.which;
+   	 if(key == 13)  // the enter key code
+   	  {
+   	   updateEvent();
+   	   return false;
+   	  }
+   	});   
+
+    $('#prompt-update').on('click', function (e) {
+        e.preventDefault();
+        updateEvent();
     });
 
     $('#prompt-delete').on('click', function (e) {
         e.preventDefault();
-        
          var r = confirm("Are you sure? This cannot be undone.");
              if (r === true) {
             	 $.ajax({
