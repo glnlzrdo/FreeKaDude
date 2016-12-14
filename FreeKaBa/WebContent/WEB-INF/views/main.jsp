@@ -123,7 +123,6 @@
       	
         </div>
     </div>
-    <div class="footer"></div>
 
 <div id="createEventModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-header">
