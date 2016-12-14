@@ -65,9 +65,17 @@
 	            		</table>
 	            	</div>
 	            	<div id="search-parameters">
-		            	From: <input name="searchFrom" type="date" required="required"><br/>
-		            	Until: <input name="searchTo" type="date" required="required">
-		            	<input id="searchbutton" class="ui-button ui-widget ui-corner-all" type="submit" name="search" value="Search" disabled="disabled">
+	            		<table>
+		            	<tr>
+		            		<td>From:</td><td><input name="searchFrom" type="date" required="required"></td>
+		            	</tr>
+		            	<tr>
+		            		<td>Until:</td><td><input name="searchTo" type="date" required="required"></td>
+		            	</tr>
+		            	<tr>
+		            		<td></td><td><input id="searchbutton" class="ui-button ui-widget ui-corner-all" type="submit" name="search" value="Search" disabled="disabled"></td>
+	            		</tr>
+	            		</table>
 	            	</div>
 	            </form>
 	        </div>
