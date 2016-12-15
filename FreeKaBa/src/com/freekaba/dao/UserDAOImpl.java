@@ -1,6 +1,7 @@
 package com.freekaba.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -69,6 +70,20 @@ public class UserDAOImpl implements UserDAO{
 		return users;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> getCheckedFriends(List<Integer> friendIds) { //TODO incorporate password
+		List<User> users = new ArrayList<User>();
+		List<User> tempuser = users;
+		//String hql = "FROM User WHERE user_id=?";
+		for (Integer friend : friendIds) {
+			tempuser = (List<User>) sessionFactory.getCurrentSession()
+					.createQuery("FROM User WHERE user_id=:id")
+					.setParameter("id", friend)
+					.getResultList();
+					users.add(tempuser.get(0));
+		}
+		return users;
+	}
 	
 }

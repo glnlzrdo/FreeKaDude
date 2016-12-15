@@ -223,4 +223,9 @@ $(document).ready(function () {
 	    submitButt.attr("disabled", !checkboxes.is(":checked"));
 	});
 	
+	var checkboxes = $("input[type='checkbox']");
+	
+	$("#checkAll").click(function(){
+	    checkboxes.prop('checked', this.checked);
+	});
 });

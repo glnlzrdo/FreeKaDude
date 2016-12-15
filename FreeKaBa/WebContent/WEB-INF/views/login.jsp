@@ -53,6 +53,12 @@
 					<c:if test="${not empty msg}">
 						<div class="msg">${msg}</div>
 					</c:if>
+					<c:if test="${not empty regfail}">
+						<div class="regfail">${regfail}</div>
+					</c:if>
+					<c:if test="${not empty regok}">
+						<div class="regok">${regok}</div>
+					</c:if>
 	                <p>Username</p>
 	                <input class="login-fields" type="text" name="username" placeholder="Username" required="required"/>
 	                <p>Password</p>
