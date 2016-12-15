@@ -123,54 +123,11 @@ public class Form {
 			calData.add(new CalendarData(event.getEvent_id(), event.getDescription(), event.getStart().toString(), event.getEnd().toString()));
 		}
 		
-<<<<<<< HEAD
-		String  jsonInString = mapper.writeValueAsString(calData);		
-=======
 		String  jsonInString = mapper.writeValueAsString(calData);	
->>>>>>> Charles
 		return jsonInString;
 	}
 	
 	//turBORAT
-<<<<<<< HEAD
-	@ResponseBody
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String updateEvent(Event event, User user) throws JsonProcessingException, ParseException {			
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonInString = mapper.writeValueAsString(event);
-		Event dbEvent = eventDao.getEvent(event.getEvent_id());
-		System.out.println("=======================");
-		System.out.println(event.getDescription() + "\n" + event.getStart() + "\n" + event.getEnd());
-		dbEvent.setDescription(event.getDescription());
-		//dbEvent.setStart(event.getStart());
-		//dbEvent.setEnd(event.getEnd());
-		eventDao.updateEvent(dbEvent);
-		return jsonInString;
-
-	}
-		
-	//EMAN //turBORAT
-	@ResponseBody
-	@RequestMapping(value = "/process", method = RequestMethod.POST)
-	public String getSearchResultViaAjax(Event event, User user) throws JsonProcessingException, ParseException {			
-		
-		String pattern = "yyyy-MM-dd HH:mm:ss";
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		
-		event.setStart(sdf.parse(event.getStartTime()));
-		event.setEnd(sdf.parse(event.getEndTime()));
-		System.out.println(sdf.parse(event.getStartTime()));
-		
-		event.setUser_id(user.getUser_id());
-		
-		eventDao.createEvent(event);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Event lastEvent = eventDao.getLastEvent(user.getUser_id());
-		//Object to JSON in String
-		String jsonInString = mapper.writeValueAsString(lastEvent.getEvent_id());
-=======
 		@ResponseBody
 		@RequestMapping(value = "/update", method = RequestMethod.POST)
 		public String updateEvent(Event event, User user) throws JsonProcessingException, ParseException {			
@@ -186,7 +143,6 @@ public class Form {
 			eventDao.updateEvent(dbEvent);
 			return jsonInString;
 		}
->>>>>>> Charles
 		
 	//EMAN //turBORAT
 		@ResponseBody
@@ -211,10 +167,6 @@ public class Form {
 			
 			return jsonInString;
 
-<<<<<<< HEAD
-	}
-	
-=======
 		}
 		
 	@RequestMapping(value="GetAllData", method = RequestMethod.POST)
@@ -222,7 +174,6 @@ public class Form {
 		//TODO still needed?	
 		return null;
 	}
->>>>>>> Charles
 		
 	//EMAN
 	@ResponseBody
@@ -240,14 +191,10 @@ public class Form {
 			userIds.add(Integer.parseInt(userId));
 		}
 		
-<<<<<<< HEAD
-		
-=======
 		List<Integer> friendOnlyIds = new ArrayList<>();
 		for(String friendIdstemp : friendIds){
 			friendOnlyIds.add(Integer.parseInt(friendIdstemp));
 		}
->>>>>>> Charles
 		
 		Date searchFrom = sdf.parse(from);  
 		Date searchTo = sdf.parse(to);
