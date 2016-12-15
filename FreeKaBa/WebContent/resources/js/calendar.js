@@ -32,6 +32,8 @@ $(document).ready(function () {
 	    	         },
 	    	         editable: true,
 	    	         selectable: true,
+	    	         eventStartEditable: false,
+	    	         eventDurationEditable: false,
 	    	         //eventLimit: true, // allow "more" link when too many events
 	    	         navLinks: true,
 	 	         

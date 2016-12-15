@@ -240,7 +240,14 @@ public class Form {
 			userIds.add(Integer.parseInt(userId));
 		}
 		
+<<<<<<< HEAD
 		
+=======
+		List<Integer> friendOnlyIds = new ArrayList<>();
+		for(String friendIdstemp : friendIds){
+			friendOnlyIds.add(Integer.parseInt(friendIdstemp));
+		}
+>>>>>>> Charles
 		
 		Date searchFrom = sdf.parse(from);  
 		Date searchTo = sdf.parse(to);
@@ -296,7 +303,7 @@ public class Form {
 		System.out.println("Common Free times" + searchHours);
 		
 		List<User> friendstop = userDao.getFriends(user.getUser_id(), user.getGroup_id());
-		List<User> friendsbottom = userDao.getCheckedFriends(userIds);
+		List<User> friendsbottom = userDao.getCheckedFriends(friendOnlyIds);
 		
 		if(searchHours.size() != 0){
 			
