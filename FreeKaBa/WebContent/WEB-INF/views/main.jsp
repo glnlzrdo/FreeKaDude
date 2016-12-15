@@ -53,21 +53,37 @@
 	            <form action="Search" method="post">
 	            	<div id="search-members">
 	            		<table>
-	            			<tr>
-	            				<th></th>
-	            				<th>Friends</th>
-	            			</tr>
-	            			<c:forEach items="${friends}" var="friends">
-	            			<tr>
-	            				<td><input type="checkbox" value="${friends.user_id}" name="checkedfriends"/></td>
-	            				<td class="friend-list-names">${friends.firstname}</td>
-	            			</c:forEach>
-	            		</table>
-	            	</div>
+		            		<tr>
+		            		<td><span id="checkalltd"><input id="checkAll" type="checkbox"/></span></td>
+		            		<td><span id="friends-text">Friends</span></td>
+		            		</tr>
+		            	</table>
+		            	<div id="search-members-list">
+		            		<table>
+		            			<c:forEach items="${friends}" var="friends">
+		            			<tr>
+		            				<td><input type="checkbox" value="${friends.user_id}" name="checkedfriends"/></td>
+		            				<td class="friend-list-names">${friends.firstname}</td>
+		            			</tr>
+		            			</c:forEach>
+		            		</table>
+		            	</div>
+		            </div>
 	            	<div id="search-parameters">
-		            	From: <input name="searchFrom" type="date" required="required"><br/>
-		            	Until: <input name="searchTo" type="date" required="required">
-		            	<input id="searchbutton" class="ui-button ui-widget ui-corner-all" type="submit" name="search" value="Search" disabled="disabled">
+	            		<table>
+		            	<tr>
+		            		<td>From:</td><td><input name="searchFrom" type="date" required="required"></td>
+		            	</tr>
+		            	<tr>
+		            		<td>Until:</td><td><input name="searchTo" type="date" required="required"></td>
+		            	</tr>
+		            	<tr>
+		            		<td></td>
+		            		<td>
+		            			<input id="searchbutton" class="ui-button ui-widget ui-corner-all" type="submit" name="search" value="Search" disabled="disabled">
+		            		</td>
+	            		</tr>
+	            		</table>
 	            	</div>
 	            </form>
 	        </div>
@@ -78,10 +94,10 @@
         <c:when test="${not empty dateListList}">
       		<div class="dude-match-headers">
         		<label class="dude-matches">
-        		<c:forEach var="friend" items="${friends}">
-        			${friend.firstname},
+        		<c:forEach var="friendsbottom" items="${friendsbottom}">
+        			${friendsbottom.firstname},
         		</c:forEach>
-        			and You are free on
+        			and You are free on:
         		</label>
         	</div>
         	<c:forEach var="dateList" items="${dateListList}" >
@@ -107,7 +123,6 @@
       	
         </div>
     </div>
-    <div class="footer"></div>
 
 <div id="createEventModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
     <div class="modal-header">

@@ -59,6 +59,7 @@ CREATE TABLE `groups` (
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO groups VALUES(1,"Admins","Creators");
 -- --------------------------------------------------------
 
 --
@@ -71,7 +72,7 @@ CREATE TABLE `user` (
   `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
-  `group_id` int(10) UNSIGNED DEFAULT 0,
+  `group_id` int(10) UNSIGNED DEFAULT NULL,
   `firstname` varchar(255) DEFAULT NULL,
   `lastname` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -81,9 +82,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `group_id`, `firstname`, `lastname`) VALUES
-(1, 'eman', '1234', 'eman@freekaba.com', NULL, 'Emmanuel', 'Tangonan'),
-(7, 'charles', '1234', 'charles@freekaba.com', NULL, 'Charles', 'Serrato'),
-(8, 'glenn', '1234', 'glenn@freekaba.com', NULL, 'Glenn', 'Lizardo');
+(1, 'eman', '1234', 'eman@freekaba.com', 1, 'Emmanuel', 'Tangonan'),
+(7, 'charles', '1234', 'charles@freekaba.com', 1, 'Charles', 'Serrato'),
+(8, 'glenn', '1234', 'glenn@freekaba.com', 1, 'Glenn', 'Lizardo');
 
 --
 -- Indexes for dumped tables

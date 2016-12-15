@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.Where;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +35,7 @@ public class EventDAOImpl implements EventDAO{
 
 	@Override
 	public Event updateEvent(Event event) {
-		sessionFactory.getCurrentSession()
-				.update(event);
+		sessionFactory.getCurrentSession().update(event);
 		return event;
 	}
 
@@ -54,6 +59,18 @@ public class EventDAOImpl implements EventDAO{
 		Event eventResult = (Event) sessionFactory.getCurrentSession().createQuery("FROM Event WHERE event_id= :id")
 					.setParameter("id", event_id).getSingleResult();
 		return eventResult;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Event getLastEvent(int user_id) {
+		//Session session = sessionFactory.getCurrentSession();
+		DetachedCriteria query = DetachedCriteria.forClass(Event.class);
+		query.add(Restrictions.eq("user_id", user_id));
+		query.addOrder(Order.desc("event_id"));
+		
+		List<Event> results = query.getExecutableCriteria(sessionFactory.getCurrentSession()).setMaxResults(1).list();		
+	return results.get(0);
 	}
 
 	@SuppressWarnings("unchecked")
